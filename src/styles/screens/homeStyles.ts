@@ -1,0 +1,22 @@
+import { StyleSheet } from 'react-native';
+import { colors } from '@/styles/colors';
+import { spacing } from '@/styles/spacing';
+import { typography } from '@/styles/typography';
+
+export const homeStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: spacing.lg,
+  },
+  title: {
+    ...typography.h1,
+    marginBottom: spacing.sm,
+  },
+  subtitle: {
+    ...typography.body,
+    color: colors.textSecondary,
+  },
+});
