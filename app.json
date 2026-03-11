@@ -29,7 +29,7 @@
       "bundler": "metro"
     },
     "plugins": [
-      "expo-router",
+      ["expo-router", { "root": "src/app" }],
       "expo-web-browser"
     ]
   }
