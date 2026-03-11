@@ -8,6 +8,9 @@
     "noImplicitAny": true,
     "exactOptionalPropertyTypes": false,
     "noFallthroughCasesInSwitch": true,
-    "allowUnreachableCode": false
+    "allowUnreachableCode": false,
+    "paths": {
+      "@/*": ["./*"]
+    }
   }
 }
