@@ -3,7 +3,8 @@ import { useLocalSearchParams } from 'expo-router';
 import { resultStyles } from '@/styles/screens/resultStyles';
 
 export default function ResultScreen() {
-  const { score } = useLocalSearchParams<{ score: string }>();
+  // score is passed as a string param from the quiz screen once it ends
+  const { score } = useLocalSearchParams<{ score?: string }>();
 
   return (
     <View style={resultStyles.container}>
