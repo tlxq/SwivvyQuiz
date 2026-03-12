@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { colors } from './colors';
 
+// Base text styles — spread these into StyleSheet.create calls and override
+// only what needs to change (colour, textAlign, margin…).
 export const typography = StyleSheet.create({
   h1: {
     fontSize: 32,

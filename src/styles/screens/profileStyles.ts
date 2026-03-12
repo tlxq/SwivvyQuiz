@@ -1,16 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { centeredScreen } from './shared';
 import { colors } from '@/styles/colors';
 import { spacing } from '@/styles/spacing';
 import { typography } from '@/styles/typography';
 
 export const profileStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: spacing.lg,
-  },
+  container: centeredScreen,
   title: {
     ...typography.h1,
     marginBottom: spacing.sm,
