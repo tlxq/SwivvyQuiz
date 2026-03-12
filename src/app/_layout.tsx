@@ -1,12 +1,13 @@
 import { Stack } from 'expo-router';
 
-// Root navigator: the Home splash lives outside the tab group so the tab bar
-// is invisible there. Navigating into (tabs) is what makes the tab bar appear.
+// Root Stack: Welcome (no tabs) → (tabs) group → quiz Stack (no tabs).
+// Keeping quiz outside (tabs) is what hides the tab bar during gameplay.
 export default function RootLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="quiz" />
     </Stack>
   );
 }
