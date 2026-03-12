@@ -33,7 +33,7 @@ export const resultStyles = StyleSheet.create({
   },
   maxScore: {
     ...typography.body,
-    color: 'rgba(255,255,255,0.7)',
+    color: colors.textMuted,
     marginBottom: spacing.xl,
   },
 
