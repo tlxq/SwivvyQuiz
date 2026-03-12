@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import { colors } from '@/styles/colors';
+import { MaterialIcons } from '@expo/vector-icons';
 
-// Tab bar is visible on every screen inside this group (Game and Highscore).
 export default function TabsLayout() {
   return (
     <Tabs
@@ -11,9 +11,27 @@ export default function TabsLayout() {
         headerShown: false,
       }}
     >
-      {/* index is the Game/Home tab — visible as the first tab */}
-      <Tabs.Screen name="index"     options={{ title: 'Game' }} />
-      <Tabs.Screen name="highscore" options={{ title: 'Highscore' }} />
+      {/* Game tab */}
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Game',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="sports-esports" color={color} size={size} />
+          ),
+        }}
+      />
+
+      {/* Highscore tab */}
+      <Tabs.Screen
+        name="highscore"
+        options={{
+          title: 'Highscore',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="leaderboard" color={color} size={size} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
