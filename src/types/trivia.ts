@@ -23,10 +23,3 @@ export interface TriviaCategory {
 export interface TriviaCategoriesResponse {
   trivia_categories: TriviaCategory[];
 }
-
-// Expo Router serialises all route params to strings, so categoryId is a string
-// here even though the API expects a number. Convert it at the call site.
-export interface QuizScreenParams {
-  categoryId: string;
-  categoryName: string;
-}

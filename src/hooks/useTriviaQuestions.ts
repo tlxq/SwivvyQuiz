@@ -3,8 +3,8 @@ import { fetchTriviaQuestions } from '@/server/triviaService';
 import { decodeHtmlEntities } from '@/utils/triviaHelpers';
 import type { TriviaQuestion } from '@/types/trivia';
 
-// Accepts an options object so callers can add categoryId without a breaking
-// signature change if we add more filters (difficulty, type) in the future.
+// Accepts an options object so callers can add filters without a breaking
+// signature change (e.g. difficulty, type) in the future.
 interface UseTriviaQuestionsOptions {
   amount?: number;
   // When undefined the API returns a random mix from all categories.
@@ -26,30 +26,43 @@ export function useTriviaQuestions(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await fetchTriviaQuestions(amount, categoryId);
-      // Decode at the hook level — every future screen gets clean strings for free
-      setQuestions(
-        data.results.map((q) => ({
-          ...q,
-          question:          decodeHtmlEntities(q.question),
-          correct_answer:    decodeHtmlEntities(q.correct_answer),
-          incorrect_answers: q.incorrect_answers.map(decodeHtmlEntities),
-        })),
-      );
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unknown error occurred');
-    } finally {
-      setLoading(false);
-    }
-  }, [amount, categoryId]);
+  // Bumping this counter forces the effect to re-run without changing
+  // amount or categoryId — used by the "Try again" button on error.
+  const [fetchKey, setFetchKey] = useState(0);
+  const refetch = useCallback(() => setFetchKey((n) => n + 1), []);
 
   useEffect(() => {
-    void load();
-  }, [load]);
+    // The `cancelled` flag prevents a slower earlier request from overwriting
+    // results from a faster later request when categoryId changes mid-flight.
+    let cancelled = false;
 
-  return { questions, loading, error, refetch: load };
+    setLoading(true);
+    setError(null);
+
+    fetchTriviaQuestions(amount, categoryId)
+      .then((data) => {
+        if (cancelled) return;
+        // Decode at the hook level — every consumer gets clean strings for free
+        setQuestions(
+          data.results.map((q) => ({
+            ...q,
+            question:          decodeHtmlEntities(q.question),
+            correct_answer:    decodeHtmlEntities(q.correct_answer),
+            incorrect_answers: q.incorrect_answers.map(decodeHtmlEntities),
+          })),
+        );
+        setLoading(false);
+      })
+      .catch((err: unknown) => {
+        if (cancelled) return;
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        setLoading(false);
+      });
+
+    return () => { cancelled = true; };
+    // fetchKey is intentionally included so refetch() forces a re-run even
+    // when amount and categoryId haven't changed (e.g. retrying after an error).
+  }, [amount, categoryId, fetchKey]);
+
+  return { questions, loading, error, refetch };
 }
