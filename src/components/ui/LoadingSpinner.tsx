@@ -2,13 +2,17 @@ import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { colors } from '@/styles/colors';
 import { spacing } from '@/styles/spacing';
 
+interface LoadingSpinnerProps {
+  // 'light' uses white — readable on the dark gradient; 'default' uses brand indigo for light backgrounds.
+  variant?: 'default' | 'light';
+}
+
 // Full-screen loading indicator — used in screens while async data is in flight.
-// For loading states on a dark/gradient background, use ActivityIndicator directly
-// with color={colors.surface} instead of this component.
-export function LoadingSpinner() {
+export function LoadingSpinner({ variant = 'default' }: LoadingSpinnerProps) {
+  const color = variant === 'light' ? colors.surface : colors.primary;
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color={colors.primary} />
+      <ActivityIndicator size="large" color={color} />
     </View>
   );
 }
