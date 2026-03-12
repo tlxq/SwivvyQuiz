@@ -7,6 +7,8 @@ interface ErrorMessageProps {
   message: string;
 }
 
+// Full-screen error fallback — shown when a fetch fails and there is nothing
+// else to render. Intentionally simple; the caller decides whether to add a retry.
 export function ErrorMessage({ message }: ErrorMessageProps) {
   return (
     <View style={styles.container}>

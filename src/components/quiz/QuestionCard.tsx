@@ -6,17 +6,16 @@ import type { TriviaQuestion } from '@/types/trivia';
 
 interface QuestionCardProps {
   question: TriviaQuestion;
-  index: number;
+  index: number;  // 0-based; displayed as "1 / 10" style progress
   total: number;
 }
 
-// Placeholder — implement swipe gesture and card UI here
+// Placeholder card — swipe gestures and answer selection will be layered on top
+// of this once the quiz interaction is built out.
 export function QuestionCard({ question, index, total }: QuestionCardProps) {
   return (
     <View style={styles.card}>
-      <Text style={styles.counter}>
-        {index + 1} / {total}
-      </Text>
+      <Text style={styles.counter}>{index + 1} / {total}</Text>
       <Text style={styles.question}>{question.question}</Text>
     </View>
   );
