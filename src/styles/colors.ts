@@ -13,3 +13,7 @@ export const colors = {
 } as const;
 
 export type ColorKey = keyof typeof colors;
+
+// Tuple required — LinearGradient's `colors` prop rejects plain string[].
+// Used on every full-screen gradient background (Welcome, Quiz, Result).
+export const BRAND_GRADIENT: [string, string] = [colors.primary, colors.secondary];
