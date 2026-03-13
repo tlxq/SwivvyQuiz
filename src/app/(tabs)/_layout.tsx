@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { colors } from '@/styles/colors';
+import { colors } from '@/styles';
 import { MaterialIcons } from '@expo/vector-icons';
 
 export default function TabsLayout() {

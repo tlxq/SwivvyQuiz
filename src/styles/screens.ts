@@ -223,3 +223,52 @@ export const resultStyles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
   },
 });
+
+export const highscoreStyles = StyleSheet.create({
+  listContent: {
+    paddingBottom: spacing.md,
+  },
+  card: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 16,
+    padding: spacing.md,
+    marginBottom: spacing.sm,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  rank: {
+    ...typography.h2,
+    color: colors.surface,
+    opacity: 0.5,
+  },
+  textBlock: {
+    flex: 1,
+    marginLeft: spacing.sm + 4, // =12
+  },
+  name: {
+    ...typography.body,
+    color: colors.surface,
+    fontWeight: 'bold',
+  },
+  category: {
+    ...typography.caption,
+    color: 'rgba(255,255,255,0.6)',
+  },
+  score: {
+    ...typography.h2,
+    color: colors.surface,
+  },
+  emptyState: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    ...typography.body,
+    color: colors.surface,
+  },
+});
