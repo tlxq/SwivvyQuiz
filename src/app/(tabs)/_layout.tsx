@@ -11,7 +11,6 @@ export default function TabsLayout() {
         headerShown: false,
       }}
     >
-      {/* Game tab */}
       <Tabs.Screen
         name="index"
         options={{
@@ -21,8 +20,6 @@ export default function TabsLayout() {
           ),
         }}
       />
-
-      {/* Highscore tab */}
       <Tabs.Screen
         name="highscore"
         options={{
