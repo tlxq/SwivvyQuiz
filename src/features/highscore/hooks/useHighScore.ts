@@ -9,7 +9,7 @@ import {
   addDoc,
   Timestamp,
 } from 'firebase/firestore';
-import { db } from '@/services/firebase';
+import { db } from '@/lib/firebase.client';
 
 export interface HighScoreEntry {
   id?: string;
@@ -28,7 +28,7 @@ const HIGHSCORES_COLLECTION = 'highscores';
  * API-compatible with useHighScore for minimal code changes.
  * Supports top-5 global scores and per-category tracking.
  */
-export function useFirebaseHighScore() {
+export default function useHighScore() {
   const [scores, setScores] = useState<HighScoreEntry[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -45,14 +45,14 @@ export function useFirebaseHighScore() {
           collection(db, HIGHSCORES_COLLECTION),
           where('categoryId', '==', categoryId),
           orderBy('score', 'desc'),
-          limit(5)
+          limit(5),
         );
       } else {
         // Get top 5 globally
         q = query(
           collection(db, HIGHSCORES_COLLECTION),
           orderBy('score', 'desc'),
-          limit(5)
+          limit(5),
         );
       }
 
@@ -82,12 +82,13 @@ export function useFirebaseHighScore() {
    * Save a score. Returns true if it's in the top 5, false otherwise.
    */
   const save = useCallback(async (entry: HighScoreEntry): Promise<boolean> => {
+    setLoading(true);
     try {
       // Check if this score would be in the top 5
       const q = query(
         collection(db, HIGHSCORES_COLLECTION),
         orderBy('score', 'desc'),
-        limit(5)
+        limit(5),
       );
       const snapshot = await getDocs(q);
       const topScores = snapshot.docs.map((doc) => doc.data().score);
@@ -109,6 +110,8 @@ export function useFirebaseHighScore() {
     } catch (error) {
       console.error('Error saving score:', error);
       return false;
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -120,7 +123,7 @@ export function useFirebaseHighScore() {
       const q = query(
         collection(db, HIGHSCORES_COLLECTION),
         orderBy('score', 'desc'),
-        limit(5)
+        limit(5),
       );
       const snapshot = await getDocs(q);
       const topScores = snapshot.docs.map((doc) => doc.data().score);

@@ -1,8 +1,7 @@
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '@/styles/colors';
-import { spacing } from '@/styles/spacing';
-import { typography } from '@/styles/typography';
-import type { TriviaQuestion } from '@/types/trivia';
+import { colors, spacing, typography } from '@/theme';
+import type { TriviaQuestion } from '@/features/quiz/quiz.types';
 
 interface QuestionCardProps {
   question: TriviaQuestion;
@@ -11,7 +10,9 @@ interface QuestionCardProps {
 
 // Pure display card. Answer buttons live in the quiz screen so they can
 // access the timer state and trigger score calculation directly.
-export function QuestionCard({ question }: QuestionCardProps) {
+// Wrapped in React.memo to prevent unnecessary re-renders when parent updates
+// but question object hasn't changed.
+function QuestionCardComponent({ question }: QuestionCardProps) {
   return (
     <View style={styles.card}>
       <Text style={styles.difficulty}>{question.difficulty.toUpperCase()}</Text>
@@ -20,13 +21,15 @@ export function QuestionCard({ question }: QuestionCardProps) {
   );
 }
 
+export default React.memo(QuestionCardComponent);
+
 const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.surface,
     borderRadius: 20,
     padding: spacing.xl,
     // Elevation lifts the card visually above the gradient background
-    shadowColor: '#000',
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.15,
     shadowRadius: 16,

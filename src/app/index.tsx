@@ -1,9 +1,9 @@
 import { useRef, useEffect } from 'react';
 import { Text, Animated } from 'react-native';
 import { router } from 'expo-router';
-import { sharedStyles } from '@/styles/screens';
-import { Button, ScreenWrapper } from '@/components/ui';
-import { Routes } from '@/constants/routes';
+import { sharedStyles, welcomeStyles, ICONS } from '@/theme';
+import { Button, ScreenWrapper, AppIcon } from '@/components/ui';
+import { Routes } from '@/config';
 
 export default function WelcomeScreen() {
   const opacity = useRef(new Animated.Value(0)).current;
@@ -18,15 +18,10 @@ export default function WelcomeScreen() {
 
   return (
     <ScreenWrapper>
-      <Animated.View
-        style={[
-          sharedStyles.container,
-          { opacity, justifyContent: 'center', alignItems: 'center' },
-        ]}
-      >
-        <Text style={{ fontSize: 80, marginBottom: 20 }}>🧠</Text>
+      <Animated.View style={[welcomeStyles.container, { opacity }]}>
+        <AppIcon icon={ICONS.brain} size={60} />
         <Text style={sharedStyles.title}>SwivvyQuiz</Text>
-        <Text style={[sharedStyles.subtitle, { marginBottom: 40 }]}>
+        <Text style={[sharedStyles.subtitle, welcomeStyles.subtitle]}>
           Test your knowledge across multiple categories
         </Text>
         <Button

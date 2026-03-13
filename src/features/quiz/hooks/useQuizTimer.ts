@@ -7,21 +7,25 @@ interface UseTimerProps {
   isEnabled?: boolean;
 }
 
-/**
- * useTimer - Reusable hook for countdown logic with Animated progress
- * 
- * Extracts animation and interval logic from the main quiz hook,
- * making it testable and reusable for any timed UI.
- */
-export function useTimer({ duration, onTimeUp, isEnabled = true }: UseTimerProps) {
+export default function useQuizTimer({
+  duration,
+  onTimeUp,
+  isEnabled = true,
+}: UseTimerProps) {
   const [timeLeft, setTimeLeft] = useState(duration);
   const barProgress = useRef(new Animated.Value(1)).current;
   const animRef = useRef<Animated.CompositeAnimation | null>(null);
 
+  const onTimeUpRef = useRef(onTimeUp);
+
+  useEffect(() => {
+    onTimeUpRef.current = onTimeUp;
+  }, [onTimeUp]);
+
   const resetTimer = useCallback(() => {
     setTimeLeft(duration);
     barProgress.setValue(1);
-    
+
     animRef.current?.stop();
     if (isEnabled) {
       animRef.current = Animated.timing(barProgress, {
@@ -45,7 +49,7 @@ export function useTimer({ duration, onTimeUp, isEnabled = true }: UseTimerProps
       setTimeLeft((t) => {
         if (t <= 1) {
           clearInterval(interval);
-          onTimeUp();
+          onTimeUpRef.current();
           return 0;
         }
         return t - 1;
@@ -56,7 +60,7 @@ export function useTimer({ duration, onTimeUp, isEnabled = true }: UseTimerProps
       animRef.current?.stop();
       clearInterval(interval);
     };
-  }, [isEnabled, resetTimer, onTimeUp]);
+  }, [isEnabled, resetTimer]);
 
   return { timeLeft, barProgress, resetTimer };
 }

@@ -1,7 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors } from './colors';
-import { spacing } from './spacing';
-import { typography } from './typography';
+import { colors, spacing, typography } from '@/theme';
 
 export const sharedStyles = StyleSheet.create({
   container: {
@@ -26,7 +24,7 @@ export const sharedStyles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderRadius: 20,
     padding: spacing.lg,
-    shadowColor: '#000',
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
@@ -80,9 +78,9 @@ export const quizStyles = StyleSheet.create({
     flex: 1,
     height: 72,
     borderRadius: 16,
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    backgroundColor: colors.overlayLight,
     borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.3)',
+    borderColor: colors.border,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -101,18 +99,6 @@ export const quizStyles = StyleSheet.create({
   wrong: {
     backgroundColor: colors.error,
     borderColor: colors.error,
-  },
-  retryButton: {
-    marginTop: spacing.lg,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-    backgroundColor: colors.surface,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  retryButtonText: {
-    color: colors.text,
-    fontWeight: '600',
   },
 });
 
@@ -149,7 +135,7 @@ export const resultStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: colors.overlayDark,
   },
   modalContent: {
     backgroundColor: colors.surface,
@@ -222,6 +208,10 @@ export const resultStyles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: spacing.lg,
   },
+  flexBtn: {
+    flex: 1,
+    width: undefined,
+  },
 });
 
 export const highscoreStyles = StyleSheet.create({
@@ -229,12 +219,12 @@ export const highscoreStyles = StyleSheet.create({
     paddingBottom: spacing.md,
   },
   card: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: colors.overlaySoft,
     borderRadius: 16,
     padding: spacing.md,
     marginBottom: spacing.sm,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
+    borderColor: colors.overlaySoft,
   },
   row: {
     flexDirection: 'row',
@@ -247,7 +237,7 @@ export const highscoreStyles = StyleSheet.create({
   },
   textBlock: {
     flex: 1,
-    marginLeft: spacing.sm + 4, // =12
+    marginLeft: spacing.sm + spacing.xs,
   },
   name: {
     ...typography.body,
@@ -256,7 +246,7 @@ export const highscoreStyles = StyleSheet.create({
   },
   category: {
     ...typography.caption,
-    color: 'rgba(255,255,255,0.6)',
+    color: colors.overlayLight,
   },
   score: {
     ...typography.h2,
@@ -270,5 +260,25 @@ export const highscoreStyles = StyleSheet.create({
   emptyText: {
     ...typography.body,
     color: colors.surface,
+  },
+});
+
+export const welcomeStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: spacing.lg,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emoji: {
+    fontSize: 80,
+    marginBottom: spacing.lg,
+  },
+  subtitle: {
+    marginBottom: spacing.xxl + spacing.md,
+  },
+  categoryScroll: {
+    flex: 1,
+    paddingVertical: spacing.lg,
   },
 });

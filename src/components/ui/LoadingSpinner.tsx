@@ -1,6 +1,6 @@
+import React from 'react';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
-import { colors } from '@/styles/colors';
-import { spacing } from '@/styles/spacing';
+import { colors, spacing } from '@/theme';
 
 interface LoadingSpinnerProps {
   // 'light' uses white — readable on the dark gradient; 'default' uses brand indigo for light backgrounds.
@@ -8,7 +8,8 @@ interface LoadingSpinnerProps {
 }
 
 // Full-screen loading indicator — used in screens while async data is in flight.
-export function LoadingSpinner({ variant = 'default' }: LoadingSpinnerProps) {
+// Wrapped in React.memo to skip re-renders when parent updates but variant stays same.
+function LoadingSpinnerComponent({ variant = 'default' }: LoadingSpinnerProps) {
   const color = variant === 'light' ? colors.surface : colors.primary;
   return (
     <View style={styles.container}>
@@ -16,6 +17,8 @@ export function LoadingSpinner({ variant = 'default' }: LoadingSpinnerProps) {
     </View>
   );
 }
+
+export const LoadingSpinner = React.memo(LoadingSpinnerComponent);
 
 const styles = StyleSheet.create({
   container: {

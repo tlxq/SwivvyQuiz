@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { useFirebaseHighScore } from '@/hooks';
+import { useHighScore } from '@/features/highscore/hooks';
 import { LoadingSpinner, ScreenWrapper } from '@/components/ui';
-import { sharedStyles, highscoreStyles } from '@/styles';
+import { sharedStyles, highscoreStyles } from '@/theme';
 
 export default function Highscore() {
-  const { scores, loading, load } = useFirebaseHighScore();
+  const { scores, loading, load } = useHighScore();
 
   useEffect(() => {
     load();

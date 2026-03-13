@@ -1,6 +1,7 @@
+import React from 'react';
 import { Tabs } from 'expo-router';
-import { colors } from '@/styles';
-import { MaterialIcons } from '@expo/vector-icons';
+import { colors, ICONS } from '@/theme';
+import { AppIcon } from '@/components/ui';
 
 export default function TabsLayout() {
   return (
@@ -16,7 +17,7 @@ export default function TabsLayout() {
         options={{
           title: 'Game',
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="sports-esports" color={color} size={size} />
+            <AppIcon icon={ICONS.gameTab} color={color} size={size} />
           ),
         }}
       />
@@ -25,7 +26,7 @@ export default function TabsLayout() {
         options={{
           title: 'Highscore',
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="leaderboard" color={color} size={size} />
+            <AppIcon icon={ICONS.highscoreTab} color={color} size={size} />
           ),
         }}
       />

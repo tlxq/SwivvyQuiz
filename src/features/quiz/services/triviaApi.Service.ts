@@ -1,10 +1,8 @@
-import { Config } from '@/constants/config';
-import type { TriviaResponse, TriviaCategoriesResponse } from '@/types/trivia';
+import { Config } from '@/config';
+import type { TriviaResponse, TriviaCategoriesResponse } from '@/features/quiz';
 
 const BASE_URL = Config.triviaApiUrl;
 
-// We build the URL with URLSearchParams so it's easy to extend with more filters
-// (difficulty, type) later without string concatenation getting messy.
 export async function fetchTriviaQuestions(
   amount: number = 10,
   categoryId?: number,

@@ -1,23 +1,24 @@
 import { useEffect, useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { router } from 'expo-router';
-import { useQuiz } from '@/hooks';
-import { CategoryPicker } from '@/components/quiz';
+import { useQuizGame } from '@/features/quiz/hooks';
+import { QuizCategoryPicker } from '@/features/quiz/components';
 import { Button, LoadingSpinner, ScreenWrapper } from '@/components/ui';
-import { sharedStyles } from '@/styles/screens';
-import { Routes } from '@/constants/routes';
-import type { TriviaCategory } from '@/types/trivia';
+import { sharedStyles, welcomeStyles } from '@/theme';
+import { Routes } from '@/config';
+import type { TriviaCategory } from '@/features/quiz';
 
 export default function GameSetup() {
-  const { categories, loadingCategories, loadCategories } = useQuiz();
+  const { categories, loadingCategories, loadCategories } = useQuizGame();
   const [selected, setSelected] = useState<TriviaCategory | null>(null);
 
   useEffect(() => {
     loadCategories();
   }, [loadCategories]);
+
   useEffect(() => {
     if (!selected && categories.length > 0) setSelected(categories[0]);
-  }, [categories]);
+  }, [categories, selected]);
 
   const onStart = () => {
     if (!selected) return;
@@ -37,12 +38,15 @@ export default function GameSetup() {
           </Text>
         </View>
 
-        <ScrollView style={{ flex: 1, paddingVertical: 20 }}>
+        <ScrollView
+          style={welcomeStyles.categoryScroll}
+          showsVerticalScrollIndicator={false}
+        >
           {loadingCategories ? (
             <LoadingSpinner variant="light" />
           ) : (
             selected && (
-              <CategoryPicker
+              <QuizCategoryPicker
                 categories={categories}
                 selected={selected}
                 onSelect={setSelected}

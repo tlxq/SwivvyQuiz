@@ -1,7 +1,6 @@
-// Single entry point for all shared UI primitives.
-// Import from '@/components/ui' instead of deep-pathing individual files.
-export { Button } from './Button';
+export { AppIcon } from './AppIcon';
 export { ErrorMessage } from './ErrorMessage';
+export { Button } from './PrimaryButton';
 export { LoadingSpinner } from './LoadingSpinner';
 export { ProgressBar } from './ProgressBar';
-export { ScreenWrapper } from './ScreenWrapper';
+export { ScreenWrapper } from './ScreenContainer';

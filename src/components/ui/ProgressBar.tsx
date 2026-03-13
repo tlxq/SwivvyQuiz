@@ -1,5 +1,6 @@
+import React from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
-import { colors } from '@/styles/colors';
+import { colors } from '@/theme';
 
 interface ProgressBarProps {
   // An Animated.Value going from 1 (full) to 0 (empty) — pass the value from
@@ -12,7 +13,8 @@ interface ProgressBarProps {
 
 // Width-based animation requires useNativeDriver: false, which is handled by
 // the caller (useQuizTimer). This component just maps the value to a width %.
-export function ProgressBar({
+// Wrapped in React.memo to prevent re-renders from parent state changes.
+function ProgressBarComponent({
   progress,
   height = 8,
   trackColor = colors.border,
@@ -36,6 +38,8 @@ export function ProgressBar({
     </View>
   );
 }
+
+export const ProgressBar = React.memo(ProgressBarComponent);
 
 const styles = StyleSheet.create({
   track: {
