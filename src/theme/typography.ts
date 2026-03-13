@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '@/theme';
+import { colors } from './colors';
 
 export const typography = StyleSheet.create({
   h1: {
