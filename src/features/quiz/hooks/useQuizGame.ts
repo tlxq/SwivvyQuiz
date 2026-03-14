@@ -1,17 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
+import { decodeHtmlEntities } from '../quiz.utils';
 import {
-  fetchTriviaQuestions,
-  fetchTriviaCategories,
-} from '@/features/quiz/services';
-import {
-  decodeHtmlEntities,
   TOTAL_QUESTIONS,
   TIMER_DURATION,
   BASE_POINTS,
   MAX_BONUS,
-} from '@/features/quiz';
-import { useQuizTimer } from '@/features/quiz/hooks';
-import type { TriviaQuestion, TriviaCategory } from '@/features/quiz';
+} from '../quiz.constants';
+import useQuizTimer from './useQuizTimer';
+import type { TriviaQuestion, TriviaCategory } from '../quiz.types';
+import {
+  fetchTriviaQuestions,
+  fetchTriviaCategories,
+} from '../services/triviaApi.Service';
 /**
  * useQuiz - Main business logic for the quiz session.
  *
@@ -109,6 +109,12 @@ export default function useQuizGame() {
     fetchTriviaQuestions(TOTAL_QUESTIONS, categoryId)
       .then((data) => {
         if (!active) return;
+
+        if (!data.results || data.results.length === 0) {
+          setError('No questions found for this category');
+          return;
+        }
+
         setQuestions(
           data.results.map((q) => ({
             ...q,
@@ -118,8 +124,13 @@ export default function useQuizGame() {
           })),
         );
       })
-      .catch(() => active && setError('Failed to load questions'))
-      .finally(() => active && setLoading(false));
+      .catch((err) => {
+        console.error('Fetch error:', err);
+        if (active) setError('Failed to load questions');
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
 
     return () => {
       active = false;

@@ -12,14 +12,8 @@ import { router } from 'expo-router';
 import { Button } from '@/components/ui';
 import { colors, resultStyles } from '@/theme';
 import { Routes } from '@/config';
-import { MAX_SCORE } from '@/features/quiz';
-
-interface ResultViewProps {
-  score: number;
-  showModal: boolean;
-  onSave: (name: string) => void;
-  loading?: boolean;
-}
+import { MAX_SCORE } from '../quiz.constants';
+import type { ResultViewProps } from '../quiz.types';
 
 function ResultViewComponent({
   score,

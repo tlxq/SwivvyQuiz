@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, spacing, typography } from '@/theme';
-import type { TriviaQuestion } from '@/features/quiz/quiz.types';
+import type { TriviaQuestion } from '../quiz.types';
 
 interface QuestionCardProps {
   question: TriviaQuestion;

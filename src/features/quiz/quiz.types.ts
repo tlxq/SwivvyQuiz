@@ -5,13 +5,13 @@ export interface TriviaQuestion {
   type: 'boolean' | 'multiple';
   difficulty: 'easy' | 'medium' | 'hard';
   category: string;
-  question: string;        // HTML-encoded — decoded in useTriviaQuestions before use
+  question: string; // HTML-encoded — decoded in useTriviaQuestions before use
   correct_answer: string;
   incorrect_answers: string[];
 }
 
 export interface TriviaResponse {
-  response_code: number;   // 0 = success; see OTD docs for other codes
+  response_code: number; // 0 = success; see OTD docs for other codes
   results: TriviaQuestion[];
 }
 
@@ -22,4 +22,11 @@ export interface TriviaCategory {
 
 export interface TriviaCategoriesResponse {
   trivia_categories: TriviaCategory[];
+}
+
+export interface ResultViewProps {
+  score: number;
+  showModal: boolean;
+  onSave: (name: string) => void;
+  loading?: boolean;
 }

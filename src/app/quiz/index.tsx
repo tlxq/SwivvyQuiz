@@ -1,24 +1,24 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { useLocalSearchParams, Stack } from 'expo-router';
-import { useQuizGame } from '@/features/quiz/hooks';
-import { TOTAL_QUESTIONS, TIMER_WARNING_THRESHOLD } from '@/features/quiz';
-import { useHighScore } from '@/features/highscore/hooks';
+import { useLocalSearchParams } from 'expo-router';
+import { useQuizGame } from '@/features/quiz/hooks'; // Main quiz/game logic
+import { useHighScore } from '@/features/highscore/hooks'; // Handles highscore save/check
 import {
   Button,
   LoadingSpinner,
   ErrorMessage,
-  ProgressBar,
   ScreenWrapper,
 } from '@/components/ui';
 import { QuizQuestionCard, QuizResultView } from '@/features/quiz/components';
-import { quizStyles, colors } from '@/theme';
+import { quizStyles } from '@/theme';
 
+// Only business logic state here!
 export default function QuizScreen() {
-  const { categoryId, categoryName } = useLocalSearchParams<{
-    categoryId?: string;
-    categoryName?: string;
+  const { categoryId } = useLocalSearchParams<{
+    categoryId: string;
   }>();
+
+  // Main quiz/game state from custom hook
   const {
     questions,
     loading,
@@ -27,22 +27,25 @@ export default function QuizScreen() {
     score,
     isCompleted,
     timeLeft,
-    barProgress,
     isAnswered,
     selectedAnswer,
     submitAnswer,
-    startQuiz,
     refetchQuestions,
+    startQuiz,
   } = useQuizGame();
 
+  // Highscore checks and save methods (from Firebase logic)
   const { save, isTopFive, loading: savingScore } = useHighScore();
+
+  // Local state: for showing modal & tracking if we checked top score
   const [showModal, setShowModal] = useState(false);
   const [hasCheckedTopFive, setHasCheckedTopFive] = useState(false);
 
   useEffect(() => {
-    startQuiz(Number(categoryId));
+    startQuiz(categoryId ? Number(categoryId) : undefined);
   }, [categoryId, startQuiz]);
 
+  // This effect runs only when quiz is finished.
   useEffect(() => {
     if (isCompleted && !hasCheckedTopFive) {
       setHasCheckedTopFive(true);
@@ -51,43 +54,35 @@ export default function QuizScreen() {
           setShowModal(true);
         } else {
           save({
-            categoryId: categoryId || '0',
-            categoryName: categoryName || 'Quiz',
+            categoryId: '0',
+            categoryName: 'Quiz',
             score,
             username: 'Anonymous',
           });
         }
       });
     }
-  }, [
-    isCompleted,
-    hasCheckedTopFive,
-    score,
-    categoryId,
-    categoryName,
-    isTopFive,
-    save,
-  ]);
+  }, [isCompleted, hasCheckedTopFive, score, isTopFive, save]);
 
-  const handleSave = useCallback(
-    async (name: string) => {
-      await save({
-        categoryId: categoryId || '0',
-        categoryName: categoryName || 'Quiz',
-        score,
-        username: name,
-      });
-      setShowModal(false);
-    },
-    [categoryId, categoryName, score, save],
-  );
+  // Callback after saving with username. Modal closes after save.
+  async function handleSave(name: string) {
+    await save({
+      categoryId: '0',
+      categoryName: 'Quiz',
+      score,
+      username: name,
+    });
+    setShowModal(false);
+  }
 
-  const handleRetry = useCallback(() => {
+  // Called when retrying the quiz: resets score, modal state, and game state
+  function handleRetry() {
     setHasCheckedTopFive(false);
     setShowModal(false);
     refetchQuestions();
-  }, [refetchQuestions]);
+  }
 
+  // Show error if quiz can't load
   if (error)
     return (
       <ScreenWrapper>
@@ -98,6 +93,7 @@ export default function QuizScreen() {
       </ScreenWrapper>
     );
 
+  // Show loading spinner at app start
   if (loading && questions.length === 0)
     return (
       <ScreenWrapper>
@@ -105,6 +101,7 @@ export default function QuizScreen() {
       </ScreenWrapper>
     );
 
+  // If finished, show result and modal
   if (isCompleted)
     return (
       <ScreenWrapper>
@@ -117,85 +114,61 @@ export default function QuizScreen() {
       </ScreenWrapper>
     );
 
+  // Question UI render (main quiz flow)
   if (questions.length > 0 && questionIndex < questions.length) {
     const question = questions[questionIndex];
-
     return (
       <ScreenWrapper>
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            headerTransparent: true,
-            headerTitle: '',
-            headerTintColor: colors.surface,
-          }}
-        />
-
         <View style={quizStyles.screenContainer}>
-          <View>
-            <View style={quizStyles.headerRow}>
-              <Text style={quizStyles.metaText}>{categoryName || 'Quiz'}</Text>
-              <Text style={quizStyles.metaText}>Score: {score}</Text>
+          {/* Quiz category & score */}
+          <View style={quizStyles.headerRow}>
+            <Text style={quizStyles.metaText}>Quiz</Text>
+            <Text style={quizStyles.metaText}>Score: {score}</Text>
+          </View>
+          {/* Timer info */}
+          <View style={quizStyles.timerSection}>
+            <View style={quizStyles.timerRow}>
+              <Text style={quizStyles.metaText}>
+                Question {questionIndex + 1}/{questions.length}
+              </Text>
+              <Text style={quizStyles.metaText}>{timeLeft}s</Text>
             </View>
-
-            <View style={quizStyles.timerSection}>
-              <View style={quizStyles.timerRow}>
-                <Text style={quizStyles.metaText}>
-                  Question {questionIndex + 1}/{TOTAL_QUESTIONS}
+          </View>
+          {/* The card shows question */}
+          <QuizQuestionCard question={question} />
+          {/* Answer buttons */}
+          <View style={quizStyles.answerRow}>
+            {(['True', 'False'] as const).map((opt) => (
+              <TouchableOpacity
+                key={opt}
+                style={[
+                  quizStyles.btn,
+                  isAnswered && opt === question.correct_answer
+                    ? quizStyles.correct
+                    : null,
+                  isAnswered &&
+                  opt === selectedAnswer &&
+                  opt !== question.correct_answer
+                    ? quizStyles.wrong
+                    : null,
+                ]}
+                onPress={() => submitAnswer(opt)}
+                disabled={isAnswered}
+                accessibilityLabel={`Answer: ${opt}`}
+              >
+                <Text style={[quizStyles.btnText, quizStyles.btnSymbol]}>
+                  {opt === 'True' ? '✓' : '✗'}
                 </Text>
-                <Text style={quizStyles.metaText}>{timeLeft}s</Text>
-              </View>
-              <ProgressBar
-                progress={barProgress}
-                fillColor={
-                  timeLeft <= TIMER_WARNING_THRESHOLD
-                    ? colors.error
-                    : colors.surface
-                }
-                trackColor={colors.overlayMedium}
-              />
-            </View>
-          </View>
-
-          <View style={quizStyles.questionContainer}>
-            <QuizQuestionCard question={question} />
-          </View>
-
-          <View style={quizStyles.answerButtonsContainer}>
-            <View style={quizStyles.answerRow}>
-              {(['True', 'False'] as const).map((opt) => (
-                <TouchableOpacity
-                  key={opt}
-                  style={[
-                    quizStyles.btn,
-                    isAnswered &&
-                      opt === questions[questionIndex]?.correct_answer &&
-                      quizStyles.correct,
-                    isAnswered &&
-                      opt === selectedAnswer &&
-                      opt !== questions[questionIndex]?.correct_answer &&
-                      quizStyles.wrong,
-                  ]}
-                  onPress={() => submitAnswer(opt)}
-                  disabled={isAnswered}
-                  activeOpacity={isAnswered ? 1 : 0.7}
-                  accessibilityRole="button"
-                  accessibilityLabel={`Answer: ${opt}`}
-                  accessibilityState={{ disabled: isAnswered }}
-                >
-                  <Text style={[quizStyles.btnText, quizStyles.btnSymbol]}>
-                    {opt === 'True' ? '✓' : '✗'}
-                  </Text>
-                  <Text style={quizStyles.metaText}>{opt}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+                <Text style={quizStyles.metaText}>{opt}</Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
       </ScreenWrapper>
     );
   }
 
+  // Rare fallback: loading spinner
   return (
     <ScreenWrapper>
       <LoadingSpinner variant="light" />

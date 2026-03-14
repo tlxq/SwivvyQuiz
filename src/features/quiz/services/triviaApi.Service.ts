@@ -1,5 +1,8 @@
 import { Config } from '@/config';
-import type { TriviaResponse, TriviaCategoriesResponse } from '@/features/quiz';
+import type {
+  TriviaResponse,
+  TriviaCategoriesResponse,
+} from '../quiz.types';
 
 const BASE_URL = Config.triviaApiUrl;
 

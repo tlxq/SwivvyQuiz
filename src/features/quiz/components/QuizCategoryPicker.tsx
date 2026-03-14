@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { AppIcon } from '@/components/ui';
 import { ICONS } from '@/theme';
 import { colors, pickerStyles as styles } from '@/theme';
-import type { TriviaCategory } from '@/features/quiz';
+import type { TriviaCategory } from '../quiz.types';
 
 interface CategoryPickerProps {
   categories: TriviaCategory[];

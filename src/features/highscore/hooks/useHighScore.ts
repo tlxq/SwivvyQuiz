@@ -9,16 +9,8 @@ import {
   addDoc,
   Timestamp,
 } from 'firebase/firestore';
+import type { HighScoreEntry } from '../highscore.types';
 import { db } from '@/lib/firebase.client';
-
-export interface HighScoreEntry {
-  id?: string;
-  categoryId: string;
-  categoryName: string;
-  score: number;
-  username?: string;
-  timestamp?: number;
-}
 
 const HIGHSCORES_COLLECTION = 'highscores';
 

@@ -6,7 +6,7 @@ import { QuizCategoryPicker } from '@/features/quiz/components';
 import { Button, LoadingSpinner, ScreenWrapper } from '@/components/ui';
 import { sharedStyles, welcomeStyles } from '@/theme';
 import { Routes } from '@/config';
-import type { TriviaCategory } from '@/features/quiz';
+import type { TriviaCategory } from '@/features/quiz/types';
 
 export default function GameSetup() {
   const { categories, loadingCategories, loadCategories } = useQuizGame();
