@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Animated } from 'react-native';
 
 interface UseTimerProps {
   duration: number;
@@ -7,14 +6,16 @@ interface UseTimerProps {
   isEnabled?: boolean;
 }
 
-export default function useQuizTimer({
+/**
+ * useQuizTimer - Manages the quiz countdown timer and numeric progress.
+ */
+export function useQuizTimer({
   duration,
   onTimeUp,
   isEnabled = true,
 }: UseTimerProps) {
   const [timeLeft, setTimeLeft] = useState(duration);
-  const barProgress = useRef(new Animated.Value(1)).current;
-  const animRef = useRef<Animated.CompositeAnimation | null>(null);
+  const [barProgress, setBarProgress] = useState(1);
 
   const onTimeUpRef = useRef(onTimeUp);
 
@@ -24,24 +25,11 @@ export default function useQuizTimer({
 
   const resetTimer = useCallback(() => {
     setTimeLeft(duration);
-    barProgress.setValue(1);
-
-    animRef.current?.stop();
-    if (isEnabled) {
-      animRef.current = Animated.timing(barProgress, {
-        toValue: 0,
-        duration: duration * 1000,
-        useNativeDriver: false,
-      });
-      animRef.current.start();
-    }
-  }, [duration, isEnabled, barProgress]);
+    setBarProgress(1);
+  }, [duration]);
 
   useEffect(() => {
-    if (!isEnabled) {
-      animRef.current?.stop();
-      return;
-    }
+    if (!isEnabled) return;
 
     resetTimer();
 
@@ -52,15 +40,16 @@ export default function useQuizTimer({
           onTimeUpRef.current();
           return 0;
         }
-        return t - 1;
+        const nextTime = t - 1;
+        setBarProgress(nextTime / duration);
+        return nextTime;
       });
     }, 1000);
 
     return () => {
-      animRef.current?.stop();
       clearInterval(interval);
     };
-  }, [isEnabled, resetTimer]);
+  }, [isEnabled, resetTimer, duration]);
 
   return { timeLeft, barProgress, resetTimer };
 }

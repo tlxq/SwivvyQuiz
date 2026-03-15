@@ -9,26 +9,25 @@ export const pickerStyles = StyleSheet.create({
     marginBottom: spacing.sm,
     color: colors.textSecondary,
     textTransform: 'uppercase',
-    letterSpacing: 0.8,
+    letterSpacing: 1.2,
   },
   pill: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: spacing.md,
-    borderRadius: 12,
+    borderRadius: 16,
     backgroundColor: colors.surface,
     borderWidth: 1.5,
     borderColor: colors.primary,
     marginBottom: spacing.sm,
   },
   pillText: {
-    ...typography.body,
+    ...typography.bodyBold,
     flex: 1,
     color: colors.primary,
-    fontWeight: '600',
   },
   dropdown: {
-    borderRadius: 12,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: colors.border,
     backgroundColor: colors.surface,
@@ -48,7 +47,7 @@ export const pickerStyles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   itemSelected: {
-    backgroundColor: `${colors.primary}10`,
+    backgroundColor: colors.surfaceTransparent,
   },
   itemText: {
     ...typography.body,
@@ -56,6 +55,87 @@ export const pickerStyles = StyleSheet.create({
   },
   itemTextSelected: {
     color: colors.primary,
-    fontWeight: '600',
+    fontWeight: '700',
+  },
+});
+
+export const errorStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: spacing.lg,
+  },
+  text: {
+    ...typography.body,
+    color: colors.error,
+    textAlign: 'center',
+  },
+});
+
+export const buttonStyles = StyleSheet.create({
+  base: {
+    borderRadius: 14,
+    marginVertical: spacing.xs,
+    overflow: 'hidden',
+  },
+  content: {
+    height: 56,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: spacing.lg,
+  },
+  label: {
+    ...typography.button,
+  },
+  outline: {
+    borderWidth: 2,
+    borderColor: colors.primary,
+    backgroundColor: 'transparent',
+  },
+  disabled: {
+    opacity: 0.5,
+  },
+});
+
+export const screenWrapperStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  safeArea: {
+    flex: 1,
+  },
+});
+
+export const progressBarStyles = StyleSheet.create({
+  container: {
+    height: 8,
+    backgroundColor: colors.surface,
+    borderRadius: 4,
+    width: '100%',
+    overflow: 'hidden',
+    marginVertical: spacing.md,
+  },
+  fill: {
+    height: '100%',
+    backgroundColor: colors.primary,
+    borderRadius: 4,
+  },
+});
+
+export const cardStyles = StyleSheet.create({
+  base: {
+    backgroundColor: colors.surface,
+    padding: spacing.lg,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: colors.border,
+    shadowColor: colors.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 4,
   },
 });

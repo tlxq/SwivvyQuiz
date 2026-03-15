@@ -1,2 +1,2 @@
-export { default as useHighScore } from './useHighScore';
-export { default as useHighScoreFlow } from './useHighScoreFlow';
+export { useHighScore } from './useHighScore';
+export { useHighScoreFlow } from './useHighScoreFlow';

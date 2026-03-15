@@ -1,1 +1,1 @@
-export * from './triviaApi.Service';
+export { fetchTriviaQuestions, fetchTriviaCategories } from './triviaService';

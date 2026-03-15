@@ -20,7 +20,7 @@ const HIGHSCORES_COLLECTION = 'highscores';
  * API-compatible with useHighScore for minimal code changes.
  * Supports top-5 global scores and per-category tracking.
  */
-export default function useHighScore() {
+export function useHighScore() {
   const [scores, setScores] = useState<HighScoreEntry[]>([]);
   const [loading, setLoading] = useState(false);
 

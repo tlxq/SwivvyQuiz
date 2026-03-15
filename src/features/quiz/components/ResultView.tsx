@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,9 @@ import { Routes } from '@/config';
 import { MAX_SCORE } from '../quiz.constants';
 import type { ResultViewProps } from '../quiz.types';
 
+/**
+ * ResultView - Displays quiz final score and top-5 leaderboard modal.
+ */
 function ResultViewComponent({
   score,
   showModal,
@@ -25,20 +28,17 @@ function ResultViewComponent({
   const percentage = Math.round((score / MAX_SCORE) * 100);
   const trophy = percentage >= 80 ? '🏆' : percentage >= 50 ? '🎯' : '💪';
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     onSave(username.trim() || 'Anonymous');
-  };
+  }, [username, onSave]);
 
-  const handleSkip = () => {
+  const handleSkip = useCallback(() => {
     onSave('Anonymous');
-  };
+  }, [onSave]);
 
   return (
     <View style={resultStyles.screenContainer}>
-      <ScrollView
-        contentContainerStyle={resultStyles.contentCenter}
-        scrollEnabled={false}
-      >
+      <View style={resultStyles.contentCenter}>
         <Text style={resultStyles.trophy}>{trophy}</Text>
         <Text style={resultStyles.score}>{score}</Text>
         <Text style={resultStyles.scoreLabel}>out of {MAX_SCORE} points</Text>
@@ -46,7 +46,7 @@ function ResultViewComponent({
         <View style={resultStyles.buttonGroup}>
           <Button
             label="Play Again"
-            variant="secondary"
+            variant="primary"
             onPress={() => router.replace(Routes.tabs)}
             disabled={loading}
           />
@@ -57,16 +57,22 @@ function ResultViewComponent({
             disabled={loading}
           />
         </View>
-      </ScrollView>
+      </View>
 
-      <Modal visible={showModal} transparent animationType="slide">
+      <Modal 
+        visible={showModal} 
+        transparent 
+        animationType="slide"
+        statusBarTranslucent
+      >
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           style={resultStyles.modalOverlay}
         >
           <ScrollView
             contentContainerStyle={resultStyles.scrollViewContent}
-            scrollEnabled={true}
+            bounces={false}
+            keyboardShouldPersistTaps="handled"
           >
             <View style={resultStyles.modalContent}>
               <Text style={resultStyles.modalTitle}>🎉 Top 5 Score!</Text>
@@ -89,17 +95,17 @@ function ResultViewComponent({
 
               <View style={resultStyles.modalButtonGroup}>
                 <Button
-                  label="Save"
-                  variant="primary"
-                  onPress={handleSave}
-                  loading={loading}
-                  style={resultStyles.flexBtn}
-                />
-                <Button
                   label="Skip"
                   variant="secondary"
                   onPress={handleSkip}
                   disabled={loading}
+                  style={resultStyles.flexBtn}
+                />
+                <Button
+                  label="Save"
+                  variant="primary"
+                  onPress={handleSave}
+                  loading={loading}
                   style={resultStyles.flexBtn}
                 />
               </View>
@@ -111,4 +117,4 @@ function ResultViewComponent({
   );
 }
 
-export default React.memo(ResultViewComponent);
+export const ResultView = React.memo(ResultViewComponent);

@@ -1,2 +1,3 @@
-export { default as useQuizGame } from './useQuizGame';
-export { default as useQuizTimer } from './useQuizTimer';
+export * from './useQuizGame';
+export * from './useQuizTimer';
+export * from './useQuizSetup';

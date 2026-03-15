@@ -1,2 +1,2 @@
-export * from './routes.config';
-export * from './app.config';
+export { Routes } from './routes.config';
+export { Config } from './app.config';

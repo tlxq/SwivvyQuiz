@@ -1,15 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { router } from 'expo-router';
-import { useQuizGame } from '@/features/quiz/hooks';
-import { QuizCategoryPicker } from '@/features/quiz/components';
-import { Button, LoadingSpinner, ScreenWrapper } from '@/components/ui';
+import { useQuizSetup, CategoryPicker, TriviaCategory } from '@/features/quiz';
+import { Button, LoadingSpinner, ScreenWrapper, ErrorMessage } from '@/components/ui';
 import { sharedStyles, welcomeStyles } from '@/theme';
 import { Routes } from '@/config';
-import type { TriviaCategory } from '@/features/quiz/types';
 
 export default function GameSetup() {
-  const { categories, loadingCategories, loadCategories } = useQuizGame();
+  const { categories, loading, error, loadCategories } = useQuizSetup();
   const [selected, setSelected] = useState<TriviaCategory | null>(null);
 
   useEffect(() => {
@@ -17,16 +15,25 @@ export default function GameSetup() {
   }, [loadCategories]);
 
   useEffect(() => {
-    if (!selected && categories.length > 0) setSelected(categories[0]);
+    if (!selected && categories.length > 0) {
+      setSelected(categories[0]);
+    }
   }, [categories, selected]);
 
-  const onStart = () => {
+  const onStart = useCallback(() => {
     if (!selected) return;
     router.push({
       pathname: Routes.quiz,
       params: { categoryId: String(selected.id), categoryName: selected.name },
     });
-  };
+  }, [selected]);
+
+  if (error) return (
+    <ScreenWrapper>
+      <ErrorMessage message={error} />
+      <Button label="Retry" onPress={loadCategories} />
+    </ScreenWrapper>
+  );
 
   return (
     <ScreenWrapper>
@@ -41,12 +48,13 @@ export default function GameSetup() {
         <ScrollView
           style={welcomeStyles.categoryScroll}
           showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flexGrow: 1 }}
         >
-          {loadingCategories ? (
-            <LoadingSpinner variant="light" />
+          {loading ? (
+            <LoadingSpinner />
           ) : (
             selected && (
-              <QuizCategoryPicker
+              <CategoryPicker
                 categories={categories}
                 selected={selected}
                 onSelect={setSelected}
@@ -55,7 +63,13 @@ export default function GameSetup() {
           )}
         </ScrollView>
 
-        <Button label="Start Quiz" onPress={onStart} />
+        <View style={{ marginTop: 'auto' }}>
+          <Button 
+            label="Start Quiz" 
+            onPress={onStart} 
+            disabled={!selected || loading} 
+          />
+        </View>
       </View>
     </ScreenWrapper>
   );

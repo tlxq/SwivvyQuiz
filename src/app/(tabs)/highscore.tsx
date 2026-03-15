@@ -1,51 +1,58 @@
 import { useEffect } from 'react';
-import { View, Text, FlatList } from 'react-native';
-import { useHighScore } from '@/features/highscore/hooks';
+import { View, Text, FlatList, RefreshControl } from 'react-native';
+import { useHighScore } from '@/features/highscore';
 import { LoadingSpinner, ScreenWrapper } from '@/components/ui';
-import { sharedStyles, highscoreStyles } from '@/theme';
+import { sharedStyles, highscoreStyles, colors } from '@/theme';
 
-export default function Highscore() {
+export default function HighscoreScreen() {
   const { scores, loading, load } = useHighScore();
 
   useEffect(() => {
     load();
   }, [load]);
 
+  const renderItem = ({ item, index }: { item: any; index: number }) => (
+    <View style={highscoreStyles.card}>
+      <Text style={highscoreStyles.rank}>{index + 1}</Text>
+      <View style={{ flex: 1 }}>
+        <Text style={highscoreStyles.name}>{item.username}</Text>
+        <Text style={[sharedStyles.subtitle, { textAlign: 'left', fontSize: 14 }]}>
+          {item.categoryName}
+        </Text>
+      </View>
+      <Text style={highscoreStyles.score}>{item.score}</Text>
+    </View>
+  );
+
   return (
     <ScreenWrapper>
-      <View style={sharedStyles.container}>
+      <View style={[sharedStyles.container, { paddingHorizontal: 0 }]}>
         <View style={sharedStyles.header}>
-          <Text style={sharedStyles.title}>Top 5</Text>
-          <Text style={sharedStyles.subtitle}>Global Leaderboard</Text>
+          <Text style={sharedStyles.title}>Leaderboard</Text>
+          <Text style={sharedStyles.subtitle}>Top 5 Global Scores</Text>
         </View>
 
-        {loading ? (
-          <LoadingSpinner variant="light" />
-        ) : scores.length === 0 ? (
-          <View style={highscoreStyles.emptyState}>
-            <Text style={highscoreStyles.emptyText}>
-              No scores yet! Be the first!
-            </Text>
-          </View>
+        {loading && scores.length === 0 ? (
+          <LoadingSpinner />
         ) : (
           <FlatList
             data={scores}
             keyExtractor={(item) => item.id || String(item.timestamp)}
             contentContainerStyle={highscoreStyles.listContent}
-            renderItem={({ item, index }) => (
-              <View style={highscoreStyles.card}>
-                <View style={highscoreStyles.row}>
-                  <Text style={highscoreStyles.rank}>#{index + 1}</Text>
-                  <View style={highscoreStyles.textBlock}>
-                    <Text style={highscoreStyles.name}>{item.username}</Text>
-                    <Text style={highscoreStyles.category}>
-                      {item.categoryName}
-                    </Text>
-                  </View>
-                  <Text style={highscoreStyles.score}>{item.score}</Text>
-                </View>
+            renderItem={renderItem}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl 
+                refreshing={loading} 
+                onRefresh={load} 
+                tintColor={colors.primary} 
+              />
+            }
+            ListEmptyComponent={
+              <View style={[sharedStyles.centered, { marginTop: 100 }]}>
+                <Text style={sharedStyles.subtitle}>No scores yet! Be the first!</Text>
               </View>
-            )}
+            }
           />
         )}
       </View>

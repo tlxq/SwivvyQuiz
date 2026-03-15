@@ -1,13 +1,13 @@
 export interface HighScoreFlowProps {
   score: number;
   isCompleted: boolean;
-  categoryId: string;
+  categoryId: number;
   categoryName: string;
 }
 
 export interface HighScoreEntry {
   id?: string;
-  categoryId: string;
+  categoryId: number;
   categoryName: string;
   score: number;
   username?: string;
