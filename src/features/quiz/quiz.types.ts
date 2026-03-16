@@ -29,4 +29,5 @@ export interface ResultViewProps {
   showModal: boolean;
   onSave: (name: string) => void;
   loading?: boolean;
+  onpress?: () => void;
 }

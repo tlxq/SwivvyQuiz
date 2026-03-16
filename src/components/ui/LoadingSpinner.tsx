@@ -1,20 +1,12 @@
-import React from 'react';
-import { ActivityIndicator } from 'react-native-paper';
-import { View } from 'react-native';
-import { colors, errorStyles } from '@/theme';
+import { ActivityIndicator, View } from 'react-native';
+import { theme } from '@/theme';
 
-interface LoadingSpinnerProps {
-  color?: string;
-  size?: 'small' | 'large';
-}
-
-export function LoadingSpinner({
-  color = colors.primary,
-  size = 'large',
-}: LoadingSpinnerProps) {
+export function LoadingSpinner() {
   return (
-    <View style={errorStyles.container}>
-      <ActivityIndicator size={size} color={color} animating={true} />
+    <View
+      style={[theme.styles.centered, { flex: 1, padding: theme.spacing.lg }]}
+    >
+      <ActivityIndicator size="large" color={theme.colors.primary} />
     </View>
   );
 }

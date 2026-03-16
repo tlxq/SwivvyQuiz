@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
 import { AppIcon } from '@/components/ui';
-import { ICONS, colors, pickerStyles as styles } from '@/theme';
+import { theme } from '@/theme';
 import type { TriviaCategory } from '../quiz.types';
 
 interface CategoryPickerProps {
@@ -10,10 +10,7 @@ interface CategoryPickerProps {
   onSelect: (cat: TriviaCategory) => void;
 }
 
-/**
- * CategoryPicker - Specialized selector for quiz categories.
- * Improved layout and accessibility.
- */
+/** CategoryPicker - display and pick category with theme styles only */
 export function CategoryPicker({
   categories,
   selected,
@@ -32,37 +29,60 @@ export function CategoryPicker({
 
   return (
     <View>
-      <Text style={styles.label}>Selected Category</Text>
+      <Text
+        style={[theme.typography.caption, { marginBottom: theme.spacing.sm }]}
+      >
+        Selected Category
+      </Text>
 
       <Pressable
-        style={styles.pill}
+        style={[
+          theme.styles.card,
+          {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingVertical: theme.spacing.md,
+            marginBottom: theme.spacing.sm,
+          },
+        ]}
         onPress={toggle}
         accessibilityRole="button"
         accessibilityLabel={`Category: ${selected.name}. Tap to change.`}
       >
-        <Text style={styles.pillText} numberOfLines={1}>
+        <Text style={theme.typography.bodyBold} numberOfLines={1}>
           {selected.name}
         </Text>
         <AppIcon
-          icon={open ? ICONS.chevronUp : ICONS.chevronDown}
+          icon={open ? theme.icons.chevronUp : theme.icons.chevronDown}
           size={20}
-          color={colors.primary}
+          color={theme.colors.primary}
         />
       </Pressable>
 
       {open && (
-        <View style={styles.dropdown}>
+        <View
+          style={[
+            theme.styles.card,
+            { padding: 0, marginBottom: theme.spacing.md },
+          ]}
+        >
           <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
-            {categories.map((cat, i) => {
+            {categories.map((cat) => {
               const isSelected = cat.id === selected.id;
-              const isLast = i === categories.length - 1;
               return (
                 <Pressable
                   key={cat.id}
                   style={[
-                    styles.item,
-                    isLast && styles.itemLast,
-                    isSelected && styles.itemSelected,
+                    {
+                      padding: theme.spacing.md,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    },
+                    isSelected && {
+                      backgroundColor: theme.colors.surfaceElevated,
+                    },
                   ]}
                   onPress={() => choose(cat)}
                   accessibilityRole="radio"
@@ -70,17 +90,20 @@ export function CategoryPicker({
                 >
                   <Text
                     style={[
-                      styles.itemText,
-                      isSelected && styles.itemTextSelected,
+                      theme.typography.body,
+                      isSelected && {
+                        color: theme.colors.primary,
+                        fontWeight: 'bold',
+                      },
                     ]}
                   >
                     {cat.name}
                   </Text>
                   {isSelected && (
                     <AppIcon
-                      icon={ICONS.check}
+                      icon={theme.icons.check}
                       size={18}
-                      color={colors.primary}
+                      color={theme.colors.primary}
                     />
                   )}
                 </Pressable>

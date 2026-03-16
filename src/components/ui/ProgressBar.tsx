@@ -1,31 +1,26 @@
-import { View, Animated } from 'react-native';
-import { useEffect, useRef } from 'react';
-import { progressBarStyles } from '@/theme';
+import { View } from 'react-native';
+import { theme } from '@/theme';
 
-interface ProgressBarProps {
-  progress: number; // 0 to 1
-}
-
-export function ProgressBar({ progress }: ProgressBarProps) {
-  const animatedProgress = useRef(new Animated.Value(progress)).current;
-
-  useEffect(() => {
-    Animated.spring(animatedProgress, {
-      toValue: progress,
-      useNativeDriver: false,
-      friction: 8,
-      tension: 40,
-    }).start();
-  }, [progress, animatedProgress]);
-
-  const width = animatedProgress.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0%', '100%'],
-  });
-
+export function ProgressBar({ progress }: { progress: number }) {
   return (
-    <View style={progressBarStyles.container}>
-      <Animated.View style={[progressBarStyles.fill, { width }]} />
+    <View
+      style={{
+        height: 8,
+        backgroundColor: theme.colors.surface,
+        borderRadius: 4,
+        width: '100%',
+        overflow: 'hidden',
+        marginVertical: theme.spacing.md,
+      }}
+    >
+      <View
+        style={{
+          height: '100%',
+          backgroundColor: theme.colors.primary,
+          borderRadius: 4,
+          width: `${Math.round(progress * 100)}%`,
+        }}
+      />
     </View>
   );
 }

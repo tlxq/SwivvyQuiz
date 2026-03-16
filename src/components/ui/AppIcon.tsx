@@ -1,21 +1,21 @@
 import React from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
-import { IconConfig, colors } from '@/theme';
-
-interface AppIconProps {
-  icon: IconConfig;
-  size?: number;
-  color?: string;
-}
+import { theme } from '@/theme';
 
 export function AppIcon({
   icon,
   size = 24,
-  color = colors.text,
-}: AppIconProps) {
-  if (icon.pack === 'MaterialIcons') {
-    return <MaterialIcons name={icon.name} size={size} color={color} />;
-  }
-
-  return null;
+  color,
+}: {
+  icon: { name: any; pack: string };
+  size?: number;
+  color?: string;
+}) {
+  return (
+    <MaterialIcons
+      name={icon.name}
+      size={size}
+      color={color ?? theme.colors.text}
+    />
+  );
 }

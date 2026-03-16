@@ -1,21 +1,12 @@
-import React from 'react';
 import { View, Text } from 'react-native';
-import { errorStyles } from '@/theme';
+import { theme } from '@/theme';
 
-interface ErrorMessageProps {
-  message: string;
-}
-
-/**
- * ErrorMessage - Custom component strictly using theme styles.
- * Displayed throughout the app for all caught errors.
- */
-function ErrorMessageComponent({ message }: ErrorMessageProps) {
+export function ErrorMessage({ message }: { message: string }) {
   return (
-    <View style={errorStyles.container}>
-      <Text style={errorStyles.text}>{message}</Text>
+    <View
+      style={[theme.styles.centered, { flex: 1, padding: theme.spacing.lg }]}
+    >
+      <Text style={theme.styles.errorText}>{message}</Text>
     </View>
   );
 }
-
-export const ErrorMessage = React.memo(ErrorMessageComponent);

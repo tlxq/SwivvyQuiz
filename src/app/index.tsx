@@ -1,50 +1,38 @@
-import { useRef, useEffect } from 'react';
-import { Text, Animated, View } from 'react-native';
+import { View, Text } from 'react-native';
 import { router } from 'expo-router';
-import { sharedStyles, welcomeStyles, ICONS } from '@/theme';
-import { Button, AppIcon } from '@/components/ui';
-import { Routes } from '@/config';
+import { theme } from '@/theme';
+import { AppIcon, Button } from '@/components/ui';
 
 export default function WelcomeScreen() {
-  const opacity = useRef(new Animated.Value(0)).current;
-  const translateY = useRef(new Animated.Value(20)).current;
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(opacity, {
-        toValue: 1,
-        duration: 800,
-        useNativeDriver: true,
-      }),
-      Animated.spring(translateY, {
-        toValue: 0,
-        tension: 20,
-        friction: 7,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, [opacity, translateY]);
-
-  const onGetStarted = () => router.replace(Routes.tabs);
+  const onGetStarted = () => router.replace('/(tabs)');
 
   return (
-    <Animated.View
+    <View
       style={[
-        welcomeStyles.container,
-        { opacity, transform: [{ translateY }] },
+        theme.styles.container,
+        { justifyContent: 'center', alignItems: 'center' },
       ]}
     >
-      <View style={sharedStyles.header}>
-        <AppIcon icon={ICONS.brain} size={80} />
-        <Text style={sharedStyles.title}>SwivvyQuiz</Text>
-        <Text style={sharedStyles.subtitle}>
+      <View style={{ alignItems: 'center', marginBottom: theme.spacing.xxl }}>
+        <AppIcon icon={theme.icons.brain} size={80} />
+        <Text style={[theme.typography.h1, { marginTop: theme.spacing.lg }]}>
+          SwivvyQuiz
+        </Text>
+        <Text
+          style={[
+            theme.typography.subtitle,
+            { textAlign: 'center', marginTop: theme.spacing.md },
+          ]}
+        >
           Test your knowledge across multiple categories with timed questions.
         </Text>
       </View>
 
-      <View style={{ width: '100%', paddingHorizontal: 40 }}>
-        <Button label="Get Started" onPress={onGetStarted} variant="primary" />
-      </View>
-    </Animated.View>
+      <Button
+        label="Get Started"
+        onPress={onGetStarted}
+        style={{ width: '100%', paddingHorizontal: theme.spacing.xl }}
+      />
+    </View>
   );
 }

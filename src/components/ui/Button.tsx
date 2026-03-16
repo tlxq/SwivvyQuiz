@@ -1,59 +1,24 @@
-import React from 'react';
-import { Button as PaperButton } from 'react-native-paper';
-import { colors, buttonStyles } from '@/theme';
-import { StyleProp, ViewStyle } from 'react-native';
-
-interface ButtonProps {
-  label: string;
-  onPress: () => void;
-  variant?: 'primary' | 'secondary' | 'outline';
-  disabled?: boolean;
-  loading?: boolean;
-  style?: StyleProp<ViewStyle>;
-}
+import { Pressable, Text } from 'react-native';
+import { theme } from '@/theme';
 
 export function Button({
   label,
   onPress,
-  variant = 'primary',
-  disabled = false,
-  loading = false,
+  disabled,
   style,
-}: ButtonProps) {
-  const isOutline = variant === 'outline';
-  const isSecondary = variant === 'secondary';
-
-  const mode = isOutline ? 'outlined' : 'contained';
-
-  // Primary: Blue BG, White Text
-  // Secondary: Dark Grey BG, White Text
-  // Outline: Transp BG, Blue Border, Blue Text
-
-  const buttonColor = isSecondary
-    ? colors.surfaceElevated
-    : isOutline
-      ? 'transparent'
-      : colors.primary;
-  const textColor = isOutline ? colors.primary : colors.text;
-
+}: {
+  label: string;
+  onPress: () => void;
+  disabled?: boolean;
+  style?: any;
+}) {
   return (
-    <PaperButton
-      mode={mode}
+    <Pressable
+      style={[theme.styles.button, disabled && { opacity: 0.5 }, style]}
       onPress={onPress}
-      disabled={disabled || loading}
-      loading={loading}
-      style={[
-        buttonStyles.base,
-        isOutline && buttonStyles.outline,
-        disabled && buttonStyles.disabled,
-        style,
-      ]}
-      contentStyle={buttonStyles.content}
-      labelStyle={buttonStyles.label}
-      buttonColor={buttonColor}
-      textColor={textColor}
+      disabled={disabled}
     >
-      {label}
-    </PaperButton>
+      <Text style={theme.styles.buttonText}>{label}</Text>
+    </Pressable>
   );
 }

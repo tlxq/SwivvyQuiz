@@ -3,8 +3,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { useQuizSetup, CategoryPicker, TriviaCategory } from '@/features/quiz';
 import { Button, LoadingSpinner, ErrorMessage } from '@/components/ui';
-import { sharedStyles, welcomeStyles } from '@/theme';
-import { Routes } from '@/config';
+import { theme } from '@/theme';
 
 export default function GameSetup() {
   const { categories, loading, error, loadCategories } = useQuizSetup();
@@ -23,32 +22,33 @@ export default function GameSetup() {
   const onStart = useCallback(() => {
     if (!selected) return;
     router.push({
-      pathname: Routes.quiz,
+      pathname: '/quiz',
       params: { categoryId: String(selected.id), categoryName: selected.name },
     });
   }, [selected]);
 
-  if (error)
+  if (error) {
     return (
-      <>
+      <View style={theme.styles.container}>
         <ErrorMessage message={error} />
         <Button label="Retry" onPress={loadCategories} />
-      </>
+      </View>
     );
+  }
 
   return (
-    <View style={sharedStyles.container}>
-      <View style={sharedStyles.header}>
-        <Text style={sharedStyles.title}>SwivvyQuiz</Text>
-        <Text style={sharedStyles.subtitle}>
+    <View style={theme.styles.container}>
+      <View style={[theme.styles.centered, { marginBottom: theme.spacing.xl }]}>
+        <Text style={theme.typography.h1}>SwivvyQuiz</Text>
+        <Text style={theme.typography.subtitle}>
           Pick a category and test your knowledge
         </Text>
       </View>
 
       <ScrollView
-        style={welcomeStyles.categoryScroll}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
+        style={{ marginBottom: theme.spacing.xl }}
       >
         {loading ? (
           <LoadingSpinner />
@@ -63,13 +63,11 @@ export default function GameSetup() {
         )}
       </ScrollView>
 
-      <View style={{ marginTop: 'auto' }}>
-        <Button
-          label="Start Quiz"
-          onPress={onStart}
-          disabled={!selected || loading}
-        />
-      </View>
+      <Button
+        label="Start Quiz"
+        onPress={onStart}
+        disabled={!selected || loading}
+      />
     </View>
   );
 }

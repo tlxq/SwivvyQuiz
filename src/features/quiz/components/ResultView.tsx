@@ -9,16 +9,12 @@ import {
   ScrollView,
 } from 'react-native';
 import { router } from 'expo-router';
-import { Button } from '@/components/ui';
-import { colors, resultStyles } from '@/theme';
-import { Routes } from '@/config';
+import { Button, AppIcon } from '@/components/ui';
+import { theme } from '@/theme';
 import { MAX_SCORE } from '../quiz.constants';
 import type { ResultViewProps } from '../quiz.types';
 
-/**
- * ResultView - Displays quiz final score and top-5 leaderboard modal.
- */
-function ResultViewComponent({
+export function ResultView({
   score,
   showModal,
   onSave,
@@ -26,7 +22,11 @@ function ResultViewComponent({
 }: ResultViewProps) {
   const [username, setUsername] = useState('');
   const percentage = Math.round((score / MAX_SCORE) * 100);
-  const trophy = percentage >= 80 ? '🏆' : percentage >= 50 ? '🎯' : '💪';
+
+  // Välj ikon från theme utifrån score
+  let trophyIcon = theme.icons.muscle;
+  if (percentage >= 80) trophyIcon = theme.icons.trophy;
+  else if (percentage >= 50) trophyIcon = theme.icons.target;
 
   const handleSave = useCallback(() => {
     onSave(username.trim() || 'Anonymous');
@@ -37,76 +37,114 @@ function ResultViewComponent({
   }, [onSave]);
 
   return (
-    <View style={resultStyles.screenContainer}>
-      <View style={resultStyles.contentCenter}>
-        <Text style={resultStyles.trophy}>{trophy}</Text>
-        <Text style={resultStyles.score}>{score}</Text>
-        <Text style={resultStyles.scoreLabel}>out of {MAX_SCORE} points</Text>
-
-        <View style={resultStyles.buttonGroup}>
-          <Button
-            label="Play Again"
-            variant="primary"
-            onPress={() => router.replace(Routes.tabs)}
-            disabled={loading}
-          />
-          <Button
-            label="Highscores"
-            variant="outline"
-            onPress={() => router.push(Routes.highscore)}
-            disabled={loading}
-          />
-        </View>
+    <View style={[theme.styles.container, theme.styles.centered]}>
+      <View style={{ marginBottom: theme.spacing.lg }}>
+        <AppIcon icon={trophyIcon} size={80} />
       </View>
-
-      <Modal 
-        visible={showModal} 
-        transparent 
+      <Text style={theme.typography.h1}>{score}</Text>
+      <Text
+        style={[theme.typography.subtitle, { marginBottom: theme.spacing.xl }]}
+      >
+        out of {MAX_SCORE} points
+      </Text>
+      <View
+        style={{
+          width: '100%',
+          gap: theme.spacing.sm,
+          marginBottom: theme.spacing.xl,
+        }}
+      >
+        <Button
+          label="Play Again"
+          onPress={() => router.replace('/(tabs)')}
+          disabled={loading}
+        />
+        <Button
+          label="Highscores"
+          onPress={() => router.push('/(tabs)/highscore')}
+          disabled={loading}
+        />
+      </View>
+      <Modal
+        visible={showModal}
+        transparent
         animationType="slide"
         statusBarTranslucent
       >
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          style={resultStyles.modalOverlay}
+          style={[
+            theme.styles.container,
+            {
+              backgroundColor: theme.colors.overlayDark,
+              justifyContent: 'flex-end',
+            },
+          ]}
         >
           <ScrollView
-            contentContainerStyle={resultStyles.scrollViewContent}
-            bounces={false}
+            contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end' }}
             keyboardShouldPersistTaps="handled"
+            bounces={false}
           >
-            <View style={resultStyles.modalContent}>
-              <Text style={resultStyles.modalTitle}>🎉 Top 5 Score!</Text>
-              <Text style={resultStyles.modalDescription}>
+            <View
+              style={{
+                backgroundColor: theme.colors.surface,
+                borderTopLeftRadius: theme.spacing.xl,
+                borderTopRightRadius: theme.spacing.xl,
+                padding: theme.spacing.xl,
+                paddingBottom: theme.spacing.xxl,
+              }}
+            >
+              <Text
+                style={[
+                  theme.typography.h2,
+                  { marginBottom: theme.spacing.sm },
+                ]}
+              >
+                Top 5 Score
+              </Text>
+              <Text
+                style={[
+                  theme.typography.body,
+                  {
+                    color: theme.colors.textSecondary,
+                    marginBottom: theme.spacing.md,
+                  },
+                ]}
+              >
                 Enter your name for the leaderboard:
               </Text>
-
-              <View style={resultStyles.inputContainer}>
-                <TextInput
-                  style={resultStyles.input}
-                  placeholder="Your Name"
-                  placeholderTextColor={colors.textSecondary}
-                  value={username}
-                  onChangeText={setUsername}
-                  maxLength={20}
-                  autoFocus
-                  editable={!loading}
-                />
-              </View>
-
-              <View style={resultStyles.modalButtonGroup}>
+              <TextInput
+                style={{
+                  backgroundColor: theme.colors.surfaceElevated,
+                  borderRadius: theme.spacing.md,
+                  padding: theme.spacing.md,
+                  color: theme.colors.text,
+                  fontSize: theme.typography.body.fontSize,
+                  borderWidth: 1,
+                  borderColor: theme.colors.border,
+                  marginBottom: theme.spacing.lg,
+                }}
+                placeholder="Your Name"
+                placeholderTextColor={theme.colors.textSecondary}
+                value={username}
+                onChangeText={setUsername}
+                maxLength={20}
+                autoFocus
+                editable={!loading}
+              />
+              <View style={{ flexDirection: 'row', gap: theme.spacing.md }}>
                 <Button
                   label="Skip"
-                  variant="secondary"
                   onPress={handleSkip}
                   disabled={loading}
-                  style={resultStyles.flexBtn}
+                  style={{ flex: 1 }}
                 />
                 <Button
                   label="Save"
-                  variant="primary"
                   onPress={handleSave}
-                  loading={loading}
-                  style={resultStyles.flexBtn}
+                  disabled={loading}
+                  style={{ flex: 1 }}
                 />
               </View>
             </View>
@@ -116,5 +154,3 @@ function ResultViewComponent({
     </View>
   );
 }
-
-export const ResultView = React.memo(ResultViewComponent);
