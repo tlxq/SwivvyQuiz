@@ -6,9 +6,6 @@ interface ProgressBarProps {
   progress: number; // 0 to 1
 }
 
-/**
- * ProgressBar - Animated progress bar for the quiz timer.
- */
 export function ProgressBar({ progress }: ProgressBarProps) {
   const animatedProgress = useRef(new Animated.Value(progress)).current;
 

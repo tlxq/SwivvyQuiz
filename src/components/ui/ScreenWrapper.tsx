@@ -1,4 +1,5 @@
-import { View, StyleProp, ViewStyle, SafeAreaView, StatusBar } from 'react-native';
+import { View, StyleProp, ViewStyle, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { screenWrapperStyles } from '@/theme';
 
 interface ScreenWrapperProps {
@@ -12,11 +13,11 @@ interface ScreenWrapperProps {
  * ScreenWrapper - A standardized container for all screens.
  * Ensures consistent background color and safe area handling.
  */
-export function ScreenWrapper({ 
-  children, 
-  style, 
+export function ScreenWrapper({
+  children,
+  style,
   safeAreaStyle,
-  withSafeArea = true 
+  withSafeArea = true,
 }: ScreenWrapperProps) {
   const Content = (
     <View style={[screenWrapperStyles.container, style]}>

@@ -2,15 +2,20 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useQuizGame, ResultView, QuestionCard } from '@/features/quiz';
 import { useHighScoreFlow } from '@/features/highscore';
-import { ScreenWrapper, LoadingSpinner, ErrorMessage, ProgressBar } from '@/components/ui';
+import {
+  ScreenWrapper,
+  LoadingSpinner,
+  ErrorMessage,
+  ProgressBar,
+} from '@/components/ui';
 import { quizStyles, sharedStyles } from '@/theme';
 
-/**
- * QuizScreen - Core gameplay experience.
- */
 export default function QuizScreen() {
-  const { categoryName, categoryId } = useLocalSearchParams<{ categoryName: string; categoryId: string }>();
-  
+  const { categoryName, categoryId } = useLocalSearchParams<{
+    categoryName: string;
+    categoryId: string;
+  }>();
+
   const {
     questions,
     loading,
@@ -26,7 +31,11 @@ export default function QuizScreen() {
     resetQuiz,
   } = useQuizGame(categoryId ? Number(categoryId) : undefined);
 
-  const { showModal, handleSave, loading: saving } = useHighScoreFlow({
+  const {
+    showModal,
+    handleSave,
+    loading: saving,
+  } = useHighScoreFlow({
     score,
     isCompleted,
     categoryId: Number(categoryId),
@@ -34,25 +43,31 @@ export default function QuizScreen() {
   });
 
   // Loading and Error states
-  if (loading && questions.length === 0) return <ScreenWrapper><LoadingSpinner /></ScreenWrapper>;
-  if (error) return (
-    <ScreenWrapper>
-      <View style={sharedStyles.container}>
-        <ErrorMessage message={error} />
-        <TouchableOpacity style={quizStyles.btn} onPress={resetQuiz}>
-          <Text style={quizStyles.btnText}>Retry</Text>
-        </TouchableOpacity>
-      </View>
-    </ScreenWrapper>
-  );
+  if (loading && questions.length === 0)
+    return (
+      <ScreenWrapper>
+        <LoadingSpinner />
+      </ScreenWrapper>
+    );
+  if (error)
+    return (
+      <ScreenWrapper>
+        <View style={sharedStyles.container}>
+          <ErrorMessage message={error} />
+          <TouchableOpacity style={quizStyles.btn} onPress={resetQuiz}>
+            <Text style={quizStyles.btnText}>Retry</Text>
+          </TouchableOpacity>
+        </View>
+      </ScreenWrapper>
+    );
 
   if (isCompleted) {
     return (
       <ScreenWrapper>
-        <ResultView 
-          score={score} 
-          showModal={showModal} 
-          onSave={handleSave} 
+        <ResultView
+          score={score}
+          showModal={showModal}
+          onSave={handleSave}
           loading={saving}
         />
       </ScreenWrapper>
@@ -65,7 +80,6 @@ export default function QuizScreen() {
   return (
     <ScreenWrapper>
       <View style={quizStyles.screenContainer || sharedStyles.container}>
-        
         {/* HEADER: Progress and Score */}
         <View style={quizStyles.headerRow}>
           <Text style={quizStyles.headerLabel}>{categoryName}</Text>
@@ -75,7 +89,7 @@ export default function QuizScreen() {
         <ProgressBar progress={barProgress} />
 
         {/* MIDDLE SECTION: Question Card */}
-        <ScrollView 
+        <ScrollView
           contentContainerStyle={quizStyles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
@@ -84,22 +98,25 @@ export default function QuizScreen() {
 
         {/* BOTTOM SECTION: Timer and Answers */}
         <View style={quizStyles.bottomControls}>
-          <Text style={quizStyles.timerText}>
-            Time Left: {timeLeft}s
-          </Text>
+          <Text style={quizStyles.timerText}>Time Left: {timeLeft}s</Text>
 
           <View style={quizStyles.answerRow}>
             {(['True', 'False'] as const).map((choice) => {
               const isCorrect = choice === currentQuestion.correct_answer;
               const isSelected = choice === selectedAnswer;
-              
-              const feedbackStyle = isAnswered 
-                ? (isCorrect ? quizStyles.correct : (isSelected ? quizStyles.wrong : null))
+
+              const feedbackStyle = isAnswered
+                ? isCorrect
+                  ? quizStyles.correct
+                  : isSelected
+                    ? quizStyles.wrong
+                    : null
                 : null;
 
-              const textStyle = isAnswered && (isCorrect || isSelected) 
-                ? { color: '#FFF' } 
-                : {};
+              const textStyle =
+                isAnswered && (isCorrect || isSelected)
+                  ? { color: '#FFF' }
+                  : {};
 
               return (
                 <TouchableOpacity
@@ -115,7 +132,6 @@ export default function QuizScreen() {
             })}
           </View>
         </View>
-
       </View>
     </ScreenWrapper>
   );

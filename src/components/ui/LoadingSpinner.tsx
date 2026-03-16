@@ -8,12 +8,9 @@ interface LoadingSpinnerProps {
   size?: 'small' | 'large';
 }
 
-/**
- * LoadingSpinner - Themed activity indicator.
- */
-export function LoadingSpinner({ 
-  color = colors.primary, 
-  size = 'large' 
+export function LoadingSpinner({
+  color = colors.primary,
+  size = 'large',
 }: LoadingSpinnerProps) {
   return (
     <View style={errorStyles.container}>

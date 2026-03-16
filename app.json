@@ -37,6 +37,20 @@
       ],
       "expo-web-browser",
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "root": "src/app"
+      },
+      "eas": {
+        "projectId": "2c019a17-3b56-4628-8fa4-29379b580cfc"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/2c019a17-3b56-4628-8fa4-29379b580cfc"
+    }
   }
 }
