@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { View, Text, FlatList, RefreshControl } from 'react-native';
 import { useHighScore } from '@/features/highscore';
-import { LoadingSpinner, ScreenWrapper } from '@/components/ui';
+import { LoadingSpinner } from '@/components/ui';
 import { sharedStyles, highscoreStyles, colors } from '@/theme';
 
 export default function HighscoreScreen() {
@@ -16,7 +16,9 @@ export default function HighscoreScreen() {
       <Text style={highscoreStyles.rank}>{index + 1}</Text>
       <View style={{ flex: 1 }}>
         <Text style={highscoreStyles.name}>{item.username}</Text>
-        <Text style={[sharedStyles.subtitle, { textAlign: 'left', fontSize: 14 }]}>
+        <Text
+          style={[sharedStyles.subtitle, { textAlign: 'left', fontSize: 14 }]}
+        >
           {item.categoryName}
         </Text>
       </View>
@@ -25,7 +27,7 @@ export default function HighscoreScreen() {
   );
 
   return (
-    <ScreenWrapper>
+    <>
       <View style={[sharedStyles.container, { paddingHorizontal: 0 }]}>
         <View style={sharedStyles.header}>
           <Text style={sharedStyles.title}>Leaderboard</Text>
@@ -42,20 +44,22 @@ export default function HighscoreScreen() {
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
             refreshControl={
-              <RefreshControl 
-                refreshing={loading} 
-                onRefresh={load} 
-                tintColor={colors.primary} 
+              <RefreshControl
+                refreshing={loading}
+                onRefresh={load}
+                tintColor={colors.primary}
               />
             }
             ListEmptyComponent={
               <View style={[sharedStyles.centered, { marginTop: 100 }]}>
-                <Text style={sharedStyles.subtitle}>No scores yet! Be the first!</Text>
+                <Text style={sharedStyles.subtitle}>
+                  No scores yet! Be the first!
+                </Text>
               </View>
             }
           />
         )}
       </View>
-    </ScreenWrapper>
+    </>
   );
 }

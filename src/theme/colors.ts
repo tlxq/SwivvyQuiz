@@ -15,8 +15,3 @@ export const colors = {
   shadow: '#000000',
   transparent: 'transparent',
 } as const;
-
-export const BRAND_GRADIENT: [string, string] = [
-  colors.primary,
-  colors.secondary,
-];

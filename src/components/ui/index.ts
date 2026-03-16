@@ -3,4 +3,3 @@ export { ErrorMessage } from './ErrorMessage';
 export { Button } from './Button';
 export { LoadingSpinner } from './LoadingSpinner';
 export { ProgressBar } from './ProgressBar';
-export { ScreenWrapper } from './ScreenWrapper';

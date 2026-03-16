@@ -1,10 +1,9 @@
-export { colors, BRAND_GRADIENT } from './colors';
+export { colors } from './colors';
 export {
   pickerStyles,
   errorStyles,
   buttonStyles,
   progressBarStyles,
-  screenWrapperStyles,
   cardStyles,
 } from './componentStyle';
 export {

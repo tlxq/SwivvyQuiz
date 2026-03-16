@@ -99,16 +99,6 @@ export const buttonStyles = StyleSheet.create({
   },
 });
 
-export const screenWrapperStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  safeArea: {
-    flex: 1,
-  },
-});
-
 export const progressBarStyles = StyleSheet.create({
   container: {
     height: 8,

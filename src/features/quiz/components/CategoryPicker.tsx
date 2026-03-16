@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Pressable } from 'react-native';
 import { AppIcon } from '@/components/ui';
 import { ICONS, colors, pickerStyles as styles } from '@/theme';
 import type { TriviaCategory } from '../quiz.types';
@@ -22,41 +22,42 @@ export function CategoryPicker({
   const [open, setOpen] = useState(false);
 
   const toggle = useCallback(() => setOpen((v) => !v), []);
-  const choose = useCallback((cat: TriviaCategory) => {
-    onSelect(cat);
-    setOpen(false);
-  }, [onSelect]);
+  const choose = useCallback(
+    (cat: TriviaCategory) => {
+      onSelect(cat);
+      setOpen(false);
+    },
+    [onSelect],
+  );
 
   return (
     <View>
       <Text style={styles.label}>Selected Category</Text>
 
-      <TouchableOpacity
+      <Pressable
         style={styles.pill}
         onPress={toggle}
-        activeOpacity={0.7}
         accessibilityRole="button"
         accessibilityLabel={`Category: ${selected.name}. Tap to change.`}
       >
-        <Text style={styles.pillText} numberOfLines={1}>{selected.name}</Text>
+        <Text style={styles.pillText} numberOfLines={1}>
+          {selected.name}
+        </Text>
         <AppIcon
           icon={open ? ICONS.chevronUp : ICONS.chevronDown}
           size={20}
           color={colors.primary}
         />
-      </TouchableOpacity>
+      </Pressable>
 
       {open && (
         <View style={styles.dropdown}>
-          <ScrollView 
-            nestedScrollEnabled 
-            showsVerticalScrollIndicator={false}
-          >
+          <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
             {categories.map((cat, i) => {
               const isSelected = cat.id === selected.id;
               const isLast = i === categories.length - 1;
               return (
-                <TouchableOpacity
+                <Pressable
                   key={cat.id}
                   style={[
                     styles.item,
@@ -82,7 +83,7 @@ export function CategoryPicker({
                       color={colors.primary}
                     />
                   )}
-                </TouchableOpacity>
+                </Pressable>
               );
             })}
           </ScrollView>
