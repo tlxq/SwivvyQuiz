@@ -2,15 +2,16 @@ import React from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import { theme } from '@/theme';
 
-export function AppIcon({
-  icon,
-  size = 24,
-  color,
-}: {
-  icon: { name: any; pack: string };
+// Typen bygger nu på theme.icons och är 100% literal-strikt
+type IconObject = (typeof theme.icons)[keyof typeof theme.icons];
+
+export interface AppIconProps {
+  icon: IconObject;
   size?: number;
   color?: string;
-}) {
+}
+
+export function AppIcon({ icon, size = 24, color }: AppIconProps) {
   return (
     <MaterialIcons
       name={icon.name}

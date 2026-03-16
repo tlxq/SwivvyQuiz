@@ -23,8 +23,8 @@ export function ResultView({
   const [username, setUsername] = useState('');
   const percentage = Math.round((score / MAX_SCORE) * 100);
 
-  // Choose icon from theme based on score
-  let trophyIcon = theme.icons.muscle;
+  type TrophyIcon = (typeof theme.icons)[keyof typeof theme.icons];
+  let trophyIcon: TrophyIcon = theme.icons.muscle;
   if (percentage >= 80) trophyIcon = theme.icons.trophy;
   else if (percentage >= 50) trophyIcon = theme.icons.target;
 

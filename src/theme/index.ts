@@ -98,7 +98,6 @@ const typography = {
 
 // UNIVERSAL STYLES
 const styles = StyleSheet.create({
-  // Containers, layout, utility
   container: {
     flex: 1,
     padding: spacing.lg,
@@ -122,7 +121,6 @@ const styles = StyleSheet.create({
   },
   gapMd: { gap: spacing.md },
 
-  // Cards and card headers
   card: {
     backgroundColor: colors.surface,
     padding: spacing.lg,
@@ -138,7 +136,6 @@ const styles = StyleSheet.create({
   cardHeader: { alignItems: 'center', marginBottom: spacing.xxl },
   cardRow: { flexDirection: 'row', alignItems: 'center' },
 
-  // FlatList/layout
   listContent: { paddingBottom: spacing.xxl },
   centerBelowLg: {
     justifyContent: 'center',
@@ -150,15 +147,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: spacing.md,
   },
-
-  // Numeric rank badge (width for 2-digit numbers etc)
   rankNum: { width: 32, textAlign: 'center' },
-
-  // Helpers for gap/margin
   marginLeftMd: { marginLeft: spacing.md },
   marginTop100: { marginTop: 100 },
 
-  // Buttons
   button: {
     minHeight: 48,
     borderRadius: 14,
@@ -172,7 +164,6 @@ const styles = StyleSheet.create({
   buttonFull: { width: '100%', paddingHorizontal: spacing.xl },
   answerButton: { flex: 1, height: 64 },
 
-  // Error and loading
   errorText: {
     color: colors.error,
     textAlign: 'center',
@@ -186,7 +177,6 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
 
-  // ProgressBar
   progressBarTrack: {
     height: 8,
     backgroundColor: colors.surface,
@@ -207,7 +197,6 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
 
-  // Modal/Panel
   modalPanel: {
     backgroundColor: colors.surface,
     borderTopLeftRadius: spacing.xl,
@@ -216,7 +205,6 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.xxl,
   },
 
-  // Extra: Quiz scroll & answer
   quizScrollContent: {
     flexGrow: 1,
     justifyContent: 'center',
@@ -231,7 +219,6 @@ const styles = StyleSheet.create({
   },
   answerRow: { flexDirection: 'row', gap: spacing.md },
 
-  // Typography extras
   h1ScreenTitle: { ...typography.h1, marginTop: spacing.lg },
   subtitleScreen: {
     ...typography.subtitle,
@@ -240,7 +227,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const icons = {
+// ----------- MATERIAL ICONER (as const!)
+export const icons = {
   gameTab: { name: 'sports-esports', pack: 'MaterialIcons' },
   highscoreTab: { name: 'leaderboard', pack: 'MaterialIcons' },
   chevronUp: { name: 'keyboard-arrow-up', pack: 'MaterialIcons' },
@@ -250,6 +238,6 @@ const icons = {
   trophy: { name: 'emoji-events', pack: 'MaterialIcons' },
   target: { name: 'my-location', pack: 'MaterialIcons' },
   muscle: { name: 'fitness-center', pack: 'MaterialIcons' },
-};
+} as const;
 
 export const theme = { colors, spacing, typography, icons, styles };

@@ -1,8 +1,15 @@
 import { useEffect } from 'react';
-import { View, Text, FlatList, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  RefreshControl,
+  ListRenderItem,
+} from 'react-native';
 import { useHighScore } from '@/features/highscore';
 import { LoadingSpinner } from '@/components/ui';
 import { theme } from '@/theme';
+import type { HighScoreEntry } from '@/features/highscore/highscore.types';
 
 export default function HighscoreScreen() {
   const { scores, loading, load } = useHighScore();
@@ -11,10 +18,10 @@ export default function HighscoreScreen() {
     load();
   }, [load]);
 
-  const renderItem = ({ item, index }: { item: any; index: number }) => (
+  const renderItem: ListRenderItem<HighScoreEntry> = ({ item, index }) => (
     <View style={[theme.styles.card, theme.styles.cardRow]}>
       <Text style={[theme.typography.button, theme.styles.rankNum]}>
-        {index + 1}
+        {index !== undefined ? index + 1 : ''}
       </Text>
       <View style={theme.styles.marginLeftMd}>
         <Text style={theme.typography.bodyBold}>{item.username}</Text>

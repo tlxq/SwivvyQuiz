@@ -1,5 +1,13 @@
-import { Pressable, Text } from 'react-native';
+import { Pressable, Text, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import { theme } from '@/theme';
+
+export interface ButtonProps {
+  label: string;
+  onPress: () => void;
+  disabled?: boolean;
+  style?: StyleProp<ViewStyle>;
+  labelStyle?: StyleProp<TextStyle>;
+}
 
 export function Button({
   label,
@@ -7,13 +15,7 @@ export function Button({
   disabled,
   style,
   labelStyle,
-}: {
-  label: string;
-  onPress: () => void;
-  disabled?: boolean;
-  style?: any;
-  labelStyle?: any;
-}) {
+}: ButtonProps) {
   return (
     <Pressable
       style={[theme.styles.button, disabled && { opacity: 0.5 }, style]}
