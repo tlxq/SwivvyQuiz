@@ -7,31 +7,18 @@ export default function WelcomeScreen() {
   const onGetStarted = () => router.replace('/(tabs)');
 
   return (
-    <View
-      style={[
-        theme.styles.container,
-        { justifyContent: 'center', alignItems: 'center' },
-      ]}
-    >
-      <View style={{ alignItems: 'center', marginBottom: theme.spacing.xxl }}>
+    <View style={theme.styles.centerScreen}>
+      <View style={theme.styles.cardHeader}>
         <AppIcon icon={theme.icons.brain} size={80} />
-        <Text style={[theme.typography.h1, { marginTop: theme.spacing.lg }]}>
-          SwivvyQuiz
-        </Text>
-        <Text
-          style={[
-            theme.typography.subtitle,
-            { textAlign: 'center', marginTop: theme.spacing.md },
-          ]}
-        >
+        <Text style={theme.styles.h1ScreenTitle}>SwivvyQuiz</Text>
+        <Text style={theme.styles.subtitleScreen}>
           Test your knowledge across multiple categories with timed questions.
         </Text>
       </View>
-
       <Button
         label="Get Started"
         onPress={onGetStarted}
-        style={{ width: '100%', paddingHorizontal: theme.spacing.xl }}
+        style={theme.styles.buttonFull}
       />
     </View>
   );

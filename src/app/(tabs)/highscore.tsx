@@ -12,18 +12,11 @@ export default function HighscoreScreen() {
   }, [load]);
 
   const renderItem = ({ item, index }: { item: any; index: number }) => (
-    <View
-      style={[
-        theme.styles.card,
-        { flexDirection: 'row', alignItems: 'center' },
-      ]}
-    >
-      <Text
-        style={[theme.typography.button, { width: 32, textAlign: 'center' }]}
-      >
+    <View style={[theme.styles.card, theme.styles.cardRow]}>
+      <Text style={[theme.typography.button, theme.styles.rankNum]}>
         {index + 1}
       </Text>
-      <View style={{ flex: 1, marginLeft: theme.spacing.md }}>
+      <View style={theme.styles.marginLeftMd}>
         <Text style={theme.typography.bodyBold}>{item.username}</Text>
         <Text style={theme.typography.caption}>{item.categoryName}</Text>
       </View>
@@ -33,7 +26,7 @@ export default function HighscoreScreen() {
 
   return (
     <View style={theme.styles.container}>
-      <View style={[theme.styles.centered, { marginBottom: theme.spacing.lg }]}>
+      <View style={theme.styles.centerBelowLg}>
         <Text style={theme.typography.h1}>Leaderboard</Text>
         <Text style={theme.typography.subtitle}>Top 5 Global Scores</Text>
       </View>
@@ -43,7 +36,7 @@ export default function HighscoreScreen() {
         <FlatList
           data={scores}
           keyExtractor={(item) => item.id?.toString() || String(item.timestamp)}
-          contentContainerStyle={{ paddingBottom: theme.spacing.xxl }}
+          contentContainerStyle={theme.styles.listContent}
           renderItem={renderItem}
           showsVerticalScrollIndicator={false}
           refreshControl={
@@ -54,7 +47,7 @@ export default function HighscoreScreen() {
             />
           }
           ListEmptyComponent={
-            <View style={[theme.styles.centered, { marginTop: 100 }]}>
+            <View style={theme.styles.centerAboveMd}>
               <Text style={theme.typography.subtitle}>
                 No scores yet! Be the first!
               </Text>

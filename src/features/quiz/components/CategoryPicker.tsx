@@ -10,7 +10,6 @@ interface CategoryPickerProps {
   onSelect: (cat: TriviaCategory) => void;
 }
 
-/** CategoryPicker - display and pick category with theme styles only */
 export function CategoryPicker({
   categories,
   selected,
@@ -29,22 +28,16 @@ export function CategoryPicker({
 
   return (
     <View>
-      <Text
-        style={[theme.typography.caption, { marginBottom: theme.spacing.sm }]}
-      >
+      <Text style={[theme.typography.caption, theme.styles.spaceBelowXl]}>
         Selected Category
       </Text>
 
       <Pressable
         style={[
           theme.styles.card,
-          {
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingVertical: theme.spacing.md,
-            marginBottom: theme.spacing.sm,
-          },
+          theme.styles.rowSpread,
+          theme.styles.spaceBelowXl,
+          { paddingVertical: theme.spacing.md },
         ]}
         onPress={toggle}
         accessibilityRole="button"
@@ -62,10 +55,7 @@ export function CategoryPicker({
 
       {open && (
         <View
-          style={[
-            theme.styles.card,
-            { padding: 0, marginBottom: theme.spacing.md },
-          ]}
+          style={[theme.styles.card, theme.styles.spaceBelowXl, { padding: 0 }]}
         >
           <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
             {categories.map((cat) => {
@@ -74,14 +64,12 @@ export function CategoryPicker({
                 <Pressable
                   key={cat.id}
                   style={[
+                    theme.styles.rowSpread,
                     {
                       padding: theme.spacing.md,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    },
-                    isSelected && {
-                      backgroundColor: theme.colors.surfaceElevated,
+                      backgroundColor: isSelected
+                        ? theme.colors.surfaceElevated
+                        : theme.colors.surface,
                     },
                   ]}
                   onPress={() => choose(cat)}

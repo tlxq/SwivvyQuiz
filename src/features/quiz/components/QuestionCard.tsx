@@ -8,10 +8,8 @@ interface QuestionCardProps {
 }
 
 export const QuestionCard = React.memo(({ question }: QuestionCardProps) => (
-  <View style={[theme.styles.card, { marginBottom: theme.spacing.lg }]}>
-    <Text
-      style={[theme.typography.caption, { marginBottom: theme.spacing.sm }]}
-    >
+  <View style={[theme.styles.card, theme.styles.spaceBelowXl]}>
+    <Text style={[theme.typography.caption, theme.styles.spaceBelowXl]}>
       {question.difficulty} • {question.category}
     </Text>
     <Text style={theme.typography.h3}>{question.question}</Text>

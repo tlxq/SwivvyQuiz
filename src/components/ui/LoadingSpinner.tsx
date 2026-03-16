@@ -3,9 +3,7 @@ import { theme } from '@/theme';
 
 export function LoadingSpinner() {
   return (
-    <View
-      style={[theme.styles.centered, { flex: 1, padding: theme.spacing.lg }]}
-    >
+    <View style={theme.styles.loadingSpinner}>
       <ActivityIndicator size="large" color={theme.colors.primary} />
     </View>
   );

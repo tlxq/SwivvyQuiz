@@ -23,7 +23,7 @@ export function ResultView({
   const [username, setUsername] = useState('');
   const percentage = Math.round((score / MAX_SCORE) * 100);
 
-  // Välj ikon från theme utifrån score
+  // Choose icon from theme based on score
   let trophyIcon = theme.icons.muscle;
   if (percentage >= 80) trophyIcon = theme.icons.trophy;
   else if (percentage >= 50) trophyIcon = theme.icons.target;
@@ -38,21 +38,19 @@ export function ResultView({
 
   return (
     <View style={[theme.styles.container, theme.styles.centered]}>
-      <View style={{ marginBottom: theme.spacing.lg }}>
+      <View style={theme.styles.spaceBelowXl}>
         <AppIcon icon={trophyIcon} size={80} />
       </View>
       <Text style={theme.typography.h1}>{score}</Text>
-      <Text
-        style={[theme.typography.subtitle, { marginBottom: theme.spacing.xl }]}
-      >
+      <Text style={[theme.typography.subtitle, theme.styles.spaceBelowXxl]}>
         out of {MAX_SCORE} points
       </Text>
       <View
-        style={{
-          width: '100%',
-          gap: theme.spacing.sm,
-          marginBottom: theme.spacing.xl,
-        }}
+        style={[
+          theme.styles.buttonFull,
+          theme.styles.gapMd,
+          theme.styles.spaceBelowXxl,
+        ]}
       >
         <Button
           label="Play Again"
@@ -86,45 +84,33 @@ export function ResultView({
             keyboardShouldPersistTaps="handled"
             bounces={false}
           >
-            <View
-              style={{
-                backgroundColor: theme.colors.surface,
-                borderTopLeftRadius: theme.spacing.xl,
-                borderTopRightRadius: theme.spacing.xl,
-                padding: theme.spacing.xl,
-                paddingBottom: theme.spacing.xxl,
-              }}
-            >
-              <Text
-                style={[
-                  theme.typography.h2,
-                  { marginBottom: theme.spacing.sm },
-                ]}
-              >
+            <View style={theme.styles.modalPanel}>
+              <Text style={[theme.typography.h2, theme.styles.spaceBelowXl]}>
                 Top 5 Score
               </Text>
               <Text
                 style={[
                   theme.typography.body,
-                  {
-                    color: theme.colors.textSecondary,
-                    marginBottom: theme.spacing.md,
-                  },
+                  { color: theme.colors.textSecondary },
+                  theme.styles.spaceBelowXl,
                 ]}
               >
                 Enter your name for the leaderboard:
               </Text>
               <TextInput
-                style={{
-                  backgroundColor: theme.colors.surfaceElevated,
-                  borderRadius: theme.spacing.md,
-                  padding: theme.spacing.md,
-                  color: theme.colors.text,
-                  fontSize: theme.typography.body.fontSize,
-                  borderWidth: 1,
-                  borderColor: theme.colors.border,
-                  marginBottom: theme.spacing.lg,
-                }}
+                style={[
+                  theme.styles.buttonFull, // for width
+                  {
+                    backgroundColor: theme.colors.surfaceElevated,
+                    borderRadius: theme.spacing.md,
+                    padding: theme.spacing.md,
+                    color: theme.colors.text,
+                    fontSize: theme.typography.body.fontSize,
+                    borderWidth: 1,
+                    borderColor: theme.colors.border,
+                    marginBottom: theme.spacing.lg,
+                  },
+                ]}
                 placeholder="Your Name"
                 placeholderTextColor={theme.colors.textSecondary}
                 value={username}
@@ -133,7 +119,7 @@ export function ResultView({
                 autoFocus
                 editable={!loading}
               />
-              <View style={{ flexDirection: 'row', gap: theme.spacing.md }}>
+              <View style={[theme.styles.row, theme.styles.gapMd]}>
                 <Button
                   label="Skip"
                   onPress={handleSkip}

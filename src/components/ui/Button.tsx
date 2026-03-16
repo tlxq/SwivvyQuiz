@@ -6,11 +6,13 @@ export function Button({
   onPress,
   disabled,
   style,
+  labelStyle,
 }: {
   label: string;
   onPress: () => void;
   disabled?: boolean;
   style?: any;
+  labelStyle?: any;
 }) {
   return (
     <Pressable
@@ -18,7 +20,7 @@ export function Button({
       onPress={onPress}
       disabled={disabled}
     >
-      <Text style={theme.styles.buttonText}>{label}</Text>
+      <Text style={[theme.styles.buttonText, labelStyle]}>{label}</Text>
     </Pressable>
   );
 }

@@ -1,8 +1,13 @@
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useQuizGame, ResultView, QuestionCard } from '@/features/quiz';
 import { useHighScoreFlow } from '@/features/highscore';
-import { LoadingSpinner, ErrorMessage, ProgressBar } from '@/components/ui';
+import {
+  LoadingSpinner,
+  ErrorMessage,
+  ProgressBar,
+  Button,
+} from '@/components/ui';
 import { theme } from '@/theme';
 
 export default function QuizScreen() {
@@ -37,18 +42,16 @@ export default function QuizScreen() {
     categoryName: categoryName || 'Trivia',
   });
 
-  // Loading and Error states
   if (loading && questions.length === 0) return <LoadingSpinner />;
   if (error)
     return (
       <View style={theme.styles.container}>
         <ErrorMessage message={error} />
-        <Pressable
-          style={[theme.styles.button, { marginTop: theme.spacing.lg }]}
+        <Button
+          label="Retry"
           onPress={resetQuiz}
-        >
-          <Text style={theme.styles.buttonText}>Retry</Text>
-        </Pressable>
+          style={theme.styles.spaceBelowXl}
+        />
       </View>
     );
 
@@ -69,66 +72,30 @@ export default function QuizScreen() {
   return (
     <View style={theme.styles.container}>
       {/* HEADER: Progress and Score */}
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: theme.spacing.md,
-        }}
-      >
-        <Text
-          style={[
-            theme.typography.caption,
-            { textTransform: 'uppercase', color: theme.colors.textSecondary },
-          ]}
-        >
-          {categoryName}
-        </Text>
-        <Text
-          style={[
-            theme.typography.caption,
-            { textTransform: 'uppercase', color: theme.colors.textSecondary },
-          ]}
-        >
-          Score: {score}
-        </Text>
+      <View style={theme.styles.rowSpread}>
+        <Text style={theme.typography.caption}>{categoryName}</Text>
+        <Text style={theme.typography.caption}>Score: {score}</Text>
       </View>
 
       <ProgressBar progress={barProgress} />
 
       {/* MIDDLE SECTION: Question Card */}
       <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          justifyContent: 'center',
-          paddingVertical: theme.spacing.xl,
-        }}
+        contentContainerStyle={theme.styles.quizScrollContent}
         showsVerticalScrollIndicator={false}
       >
         <QuestionCard question={currentQuestion} />
       </ScrollView>
 
       {/* BOTTOM SECTION: Timer and Answers */}
-      <View style={{ gap: theme.spacing.md, paddingTop: theme.spacing.lg }}>
-        <Text
-          style={[
-            theme.typography.bodyBold,
-            {
-              textAlign: 'center',
-              color: theme.colors.primary,
-              marginBottom: theme.spacing.sm,
-            },
-          ]}
-        >
-          Time Left: {timeLeft}s
-        </Text>
-        <View style={{ flexDirection: 'row', gap: theme.spacing.md }}>
+      <View style={theme.styles.timerBlock}>
+        <Text style={theme.styles.timerText}>Time Left: {timeLeft}s</Text>
+        <View style={theme.styles.answerRow}>
           {(['True', 'False'] as const).map((choice) => {
             const isCorrect = choice === currentQuestion.correct_answer;
             const isSelected = choice === selectedAnswer;
 
-            // style feedback
+            // style feedback for answers (theme-colors only)
             let feedbackStyle = {};
             if (isAnswered) {
               if (isCorrect) {
@@ -150,20 +117,14 @@ export default function QuizScreen() {
                 : {};
 
             return (
-              <Pressable
+              <Button
                 key={choice}
-                style={[
-                  theme.styles.button,
-                  theme.styles.answerButton,
-                  feedbackStyle,
-                ]}
+                label={choice}
                 onPress={() => submitAnswer(choice)}
                 disabled={isAnswered}
-              >
-                <Text style={[theme.styles.buttonText, textStyle]}>
-                  {choice}
-                </Text>
-              </Pressable>
+                style={[theme.styles.answerButton, feedbackStyle]}
+                labelStyle={textStyle}
+              />
             );
           })}
         </View>
