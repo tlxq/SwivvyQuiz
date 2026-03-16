@@ -1,49 +1,26 @@
-import { View, StyleSheet, Animated } from 'react-native';
-import { colors } from '@/styles/colors';
+import { View } from 'react-native';
+import { theme } from '@/theme';
 
-interface ProgressBarProps {
-  // An Animated.Value going from 1 (full) to 0 (empty) — pass the value from
-  // useQuizTimer so the bar drains smoothly without triggering re-renders.
-  progress: Animated.Value;
-  height?: number;
-  trackColor?: string;
-  fillColor?: string;
-}
-
-// Width-based animation requires useNativeDriver: false, which is handled by
-// the caller (useQuizTimer). This component just maps the value to a width %.
-export function ProgressBar({
-  progress,
-  height = 8,
-  trackColor = colors.border,
-  fillColor = colors.primary,
-}: ProgressBarProps) {
+export function ProgressBar({ progress }: { progress: number }) {
   return (
-    <View style={[styles.track, { height, backgroundColor: trackColor }]}>
-      <Animated.View
-        style={[
-          styles.fill,
-          {
-            height,
-            backgroundColor: fillColor,
-            width: progress.interpolate({
-              inputRange: [0, 1],
-              outputRange: ['0%', '100%'],
-            }),
-          },
-        ]}
+    <View
+      style={{
+        height: 8,
+        backgroundColor: theme.colors.surface,
+        borderRadius: 4,
+        width: '100%',
+        overflow: 'hidden',
+        marginVertical: theme.spacing.md,
+      }}
+    >
+      <View
+        style={{
+          height: '100%',
+          backgroundColor: theme.colors.primary,
+          borderRadius: 4,
+          width: `${Math.round(progress * 100)}%`,
+        }}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  track: {
-    width: '100%',
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  fill: {
-    borderRadius: 4,
-  },
-});

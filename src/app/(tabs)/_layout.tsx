@@ -1,34 +1,37 @@
+import React from 'react';
 import { Tabs } from 'expo-router';
-import { colors } from '@/styles/colors';
-import { MaterialIcons } from '@expo/vector-icons';
+import { theme } from '@/theme';
+import { AppIcon } from '@/components/ui';
 
 export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.textSecondary,
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.textSecondary,
         headerShown: false,
+        sceneStyle: { backgroundColor: theme.colors.background },
       }}
     >
-      {/* Game tab */}
       <Tabs.Screen
         name="index"
         options={{
           title: 'Game',
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="sports-esports" color={color} size={size} />
+            <AppIcon icon={theme.icons.gameTab} color={color} size={size} />
           ),
         }}
       />
-
-      {/* Highscore tab */}
       <Tabs.Screen
         name="highscore"
         options={{
           title: 'Highscore',
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="leaderboard" color={color} size={size} />
+            <AppIcon
+              icon={theme.icons.highscoreTab}
+              color={color}
+              size={size}
+            />
           ),
         }}
       />

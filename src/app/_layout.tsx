@@ -13,11 +13,7 @@ export default function RootLayout() {
     Poppins_700Bold,
   });
 
-  // If fonts are not loaded yet, just render nothing or a simple loader
   if (!loaded) return null;
-
-  // Root Stack: Welcome (no tabs) → (tabs) group → quiz Stack (no tabs).
-  // Keeping quiz outside (tabs) is what hides the tab bar during gameplay.
 
   return (
     <Stack screenOptions={{ headerShown: false }}>

@@ -1,31 +1,12 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '@/styles/colors';
-import { spacing } from '@/styles/spacing';
-import { typography } from '@/styles/typography';
+import { View, Text } from 'react-native';
+import { theme } from '@/theme';
 
-interface ErrorMessageProps {
-  message: string;
-}
-
-// Full-screen error fallback — shown when a fetch fails and there is nothing
-// else to render. Intentionally simple; the caller decides whether to add a retry.
-export function ErrorMessage({ message }: ErrorMessageProps) {
+export function ErrorMessage({ message }: { message: string }) {
   return (
-    <View style={styles.container}>
-      <Text style={[typography.body, styles.text]}>{message}</Text>
+    <View
+      style={[theme.styles.centered, { flex: 1, padding: theme.spacing.lg }]}
+    >
+      <Text style={theme.styles.errorText}>{message}</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: spacing.lg,
-  },
-  text: {
-    color: colors.error,
-    textAlign: 'center',
-  },
-});
