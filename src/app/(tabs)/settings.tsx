@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { theme } from '@/theme';
 import { Card, Button } from '@/components/ui';
 
@@ -22,10 +22,10 @@ export default function SettingsScreen() {
         <Text style={theme.typography.body}>Sound Effects: On</Text>
       </Card>
 
-      <Button 
-        label="Clear History" 
-        variant="danger" 
-        onPress={() => alert('Feature coming soon!')} 
+      <Button
+        label="Clear History"
+        variant="danger"
+        onPress={() => alert('Feature coming soon!')}
       />
     </View>
   );
