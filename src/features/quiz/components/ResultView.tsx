@@ -14,6 +14,13 @@ import { theme } from '@/theme';
 import { MAX_SCORE } from '../quiz.constants';
 import type { ResultViewProps } from '../quiz.types';
 
+// Helper to choose the trophy icon based on score percentage
+function getTrophyIcon(percentage: number) {
+  if (percentage >= 80) return theme.icons.trophy;
+  if (percentage >= 50) return theme.icons.target;
+  return theme.icons.muscle;
+}
+
 export function ResultView({
   score,
   showModal,
@@ -21,12 +28,6 @@ export function ResultView({
   loading = false,
 }: ResultViewProps) {
   const [username, setUsername] = useState('');
-  const percentage = Math.round((score / MAX_SCORE) * 100);
-
-  type TrophyIcon = (typeof theme.icons)[keyof typeof theme.icons];
-  let trophyIcon: TrophyIcon = theme.icons.muscle;
-  if (percentage >= 80) trophyIcon = theme.icons.trophy;
-  else if (percentage >= 50) trophyIcon = theme.icons.target;
 
   const handleSave = useCallback(() => {
     onSave(username.trim() || 'Anonymous');
@@ -35,6 +36,9 @@ export function ResultView({
   const handleSkip = useCallback(() => {
     onSave('Anonymous');
   }, [onSave]);
+
+  const percentage = Math.round((score / MAX_SCORE) * 100);
+  const trophyIcon = getTrophyIcon(percentage);
 
   return (
     <View style={[theme.styles.container, theme.styles.centered]}>
@@ -99,7 +103,7 @@ export function ResultView({
               </Text>
               <TextInput
                 style={[
-                  theme.styles.buttonFull, // for width
+                  theme.styles.buttonFull,
                   {
                     backgroundColor: theme.colors.surfaceElevated,
                     borderRadius: theme.spacing.md,
