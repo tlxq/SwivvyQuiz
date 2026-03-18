@@ -17,17 +17,24 @@ import { QUIZ_SETTINGS } from '@/config';
 import { decodeHTML } from '@/lib';
 
 export default function QuizScreen() {
+  // Get id and category from the previous screen
   const { id, categoryName } = useLocalSearchParams<{
     id: string;
     categoryName: string;
   }>();
+
+  // Handle the API call for the questions
   const {
     data: apiRes,
     loading,
     error,
     execute,
   } = useAsync<TriviaResponse>(true);
+
+  // Hook for saving high scores
   const { saveScore, checkIfTopFive } = useHighScore();
+
+  // All game logic (score, timer, questions)
   const {
     questions,
     currentIndex,
@@ -42,16 +49,21 @@ export default function QuizScreen() {
   const [isTopScore, setIsTopScore] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
+  // Fetch questions when the screen loads
   useEffect(() => {
     id && execute(triviaService.getQuestions(Number(id)));
   }, [id, execute]);
+
+  // Check if it's a top five score when the game ends
   useEffect(() => {
     isGameOver && checkIfTopFive(score).then(setIsTopScore);
   }, [isGameOver, score]);
 
+  // Function to save the score
   const handleSaveScore = async () => {
     if (!username.trim())
       return Alert.alert('Required', 'Please enter your name');
+    
     setIsSaving(true);
     try {
       await saveScore({
@@ -60,7 +72,7 @@ export default function QuizScreen() {
         category: categoryName || 'General',
         timestamp: Date.now(),
       });
-      router.replace('/highscore');
+      router.replace('/highscore'); // Navigate to high score list
     } catch (e) {
       Alert.alert('Error', 'Failed to save score');
     } finally {
@@ -68,6 +80,7 @@ export default function QuizScreen() {
     }
   };
 
+  // Clean up HTML entities from the question text
   const currentQuestionText = useMemo(
     () =>
       questions[currentIndex]
@@ -76,6 +89,7 @@ export default function QuizScreen() {
     [questions, currentIndex],
   );
 
+  // If the game is over, show the results screen
   if (isGameOver) {
     return (
       <View style={[theme.styles.container, { paddingTop: 60 }]}>
@@ -95,6 +109,7 @@ export default function QuizScreen() {
           Final Score: {score}
         </Text>
 
+        {/* Display all answered questions */}
         <ScrollView
           style={{ flex: 1, marginVertical: 10 }}
           showsVerticalScrollIndicator={false}
@@ -143,6 +158,7 @@ export default function QuizScreen() {
           })}
         </ScrollView>
 
+        {/* If it's a high score, show the name input field */}
         {isTopScore ? (
           <Card
             style={{ width: '100%', gap: theme.spacing.md, marginBottom: 20 }}
@@ -171,6 +187,7 @@ export default function QuizScreen() {
     );
   }
 
+  // The quiz screen while playing
   return (
     <Screen
       loading={loading && !questions.length}
@@ -182,6 +199,7 @@ export default function QuizScreen() {
         <Text style={theme.typography.bodyBold}>Score: {score}</Text>
       </View>
 
+      {/* Timer and progress bar */}
       <View style={{ marginVertical: theme.spacing.xl }}>
         <Text style={[theme.typography.h2, { textAlign: 'center' }]}>
           {timeLeft}s
@@ -189,6 +207,7 @@ export default function QuizScreen() {
         <ProgressBar progress={timeLeft / QUIZ_SETTINGS.TIMER_LIMIT} />
       </View>
 
+      {/* The question card with True/False buttons */}
       <Card style={styles.questionCard}>
         <Text style={theme.typography.caption}>
           Question {currentIndex + 1} / {questions.length}
