@@ -1,4 +1,5 @@
-import { ActivityIndicator, View } from 'react-native';
+import React from 'react';
+import { View, ActivityIndicator } from 'react-native';
 import { theme } from '@/theme';
 
 export function LoadingSpinner() {

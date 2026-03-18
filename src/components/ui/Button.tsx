@@ -1,28 +1,62 @@
-import { Pressable, Text, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import React from 'react';
+import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, ViewStyle, TextStyle } from 'react-native';
 import { theme } from '@/theme';
 
-export interface ButtonProps {
+type ButtonVariant = 'primary' | 'success' | 'danger' | 'surface';
+
+interface ButtonProps {
   label: string;
   onPress: () => void;
+  variant?: ButtonVariant;
+  loading?: boolean;
   disabled?: boolean;
-  style?: StyleProp<ViewStyle>;
-  labelStyle?: StyleProp<TextStyle>;
+  style?: ViewStyle;
 }
 
-export function Button({
-  label,
-  onPress,
-  disabled,
-  style,
-  labelStyle,
+export function Button({ 
+  label, 
+  onPress, 
+  variant = 'primary', 
+  loading = false, 
+  disabled = false,
+  style 
 }: ButtonProps) {
+  const getBackgroundColor = () => {
+    if (disabled) return theme.colors.surfaceElevated;
+    switch (variant) {
+      case 'success': return theme.colors.success;
+      case 'danger': return theme.colors.error;
+      case 'surface': return theme.colors.surfaceElevated;
+      default: return theme.colors.primary;
+    }
+  };
+
   return (
-    <Pressable
-      style={[theme.styles.button, disabled && { opacity: 0.5 }, style]}
-      onPress={onPress}
-      disabled={disabled}
+    <TouchableOpacity 
+      onPress={onPress} 
+      disabled={disabled || loading}
+      style={[styles.base, { backgroundColor: getBackgroundColor() }, style]}
     >
-      <Text style={[theme.styles.buttonText, labelStyle]}>{label}</Text>
-    </Pressable>
+      {loading ? (
+        <ActivityIndicator color={theme.colors.white} />
+      ) : (
+        <Text style={styles.text}>{label}</Text>
+      )}
+    </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  base: {
+    height: 52,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: theme.spacing.md,
+  },
+  text: {
+    ...theme.typography.bodyBold,
+    color: theme.colors.white,
+    textTransform: 'uppercase',
+  },
+});

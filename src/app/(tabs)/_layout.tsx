@@ -1,39 +1,43 @@
-import React from 'react';
 import { Tabs } from 'expo-router';
+import { MaterialIcons } from '@expo/vector-icons';
 import { theme } from '@/theme';
-import { AppIcon } from '@/components/ui';
 
 export default function TabsLayout() {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: theme.colors.primary,
-        tabBarInactiveTintColor: theme.colors.textSecondary,
-        headerShown: false,
-        sceneStyle: { backgroundColor: theme.colors.background },
-      }}
-    >
-      <Tabs.Screen
-        name="index"
+    <Tabs screenOptions={{
+      tabBarActiveTintColor: theme.colors.primary,
+      tabBarInactiveTintColor: theme.colors.textSecondary,
+      tabBarStyle: {
+        backgroundColor: theme.colors.surface,
+        borderTopColor: theme.colors.border,
+      },
+      headerStyle: {
+        backgroundColor: theme.colors.surface,
+      },
+      headerTitleStyle: {
+        ...theme.typography.h2,
+      }
+    }}>
+      <Tabs.Screen 
+        name="index" 
         options={{
-          title: 'Game',
-          tabBarIcon: ({ color, size }) => (
-            <AppIcon icon={theme.icons.gameTab} color={color} size={size} />
-          ),
-        }}
+          title: 'Quiz Setup',
+          tabBarIcon: ({ color }) => <MaterialIcons name="play-arrow" size={24} color={color} />
+        }} 
       />
-      <Tabs.Screen
-        name="highscore"
+      <Tabs.Screen 
+        name="highscore" 
         options={{
-          title: 'Highscore',
-          tabBarIcon: ({ color, size }) => (
-            <AppIcon
-              icon={theme.icons.highscoreTab}
-              color={color}
-              size={size}
-            />
-          ),
-        }}
+          title: 'Leaderboard',
+          tabBarIcon: ({ color }) => <MaterialIcons name="leaderboard" size={24} color={color} />
+        }} 
+      />
+      <Tabs.Screen 
+        name="settings" 
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color }) => <MaterialIcons name="settings" size={24} color={color} />
+        }} 
       />
     </Tabs>
   );

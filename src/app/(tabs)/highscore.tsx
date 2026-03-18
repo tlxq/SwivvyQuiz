@@ -1,67 +1,51 @@
-import { useEffect } from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  RefreshControl,
-  ListRenderItem,
-} from 'react-native';
-import { useHighScore } from '@/features/highscore';
-import { LoadingSpinner } from '@/components/ui';
+import React, { useEffect, useCallback } from 'react';
+import { View, Text, FlatList, RefreshControl } from 'react-native';
 import { theme } from '@/theme';
-import type { HighScoreEntry } from '@/features/highscore/highscore.types';
+import { useHighScore } from '@/hooks/useHighScore';
+import { LoadingSpinner, HighScoreItem } from '@/components/ui';
 
 export default function HighscoreScreen() {
-  const { scores, loading, load } = useHighScore();
+  const { scores, loading, error, loadTopScores } = useHighScore();
 
   useEffect(() => {
-    load();
-  }, [load]);
+    loadTopScores();
+  }, [loadTopScores]);
 
-  const renderItem: ListRenderItem<HighScoreEntry> = ({ item, index }) => (
-    <View style={[theme.styles.card, theme.styles.cardRow]}>
-      <Text style={[theme.typography.button, theme.styles.rankNum]}>
-        {index !== undefined ? index + 1 : ''}
-      </Text>
-      <View style={theme.styles.marginLeftMd}>
-        <Text style={theme.typography.bodyBold}>{item.username}</Text>
-        <Text style={theme.typography.caption}>{item.categoryName}</Text>
-      </View>
-      <Text style={theme.typography.button}>{item.score}</Text>
-    </View>
-  );
+  const onRefresh = useCallback(() => {
+    loadTopScores();
+  }, [loadTopScores]);
+
+  if (loading && scores.length === 0) return <LoadingSpinner />;
 
   return (
     <View style={theme.styles.container}>
-      <View style={theme.styles.centerBelowLg}>
-        <Text style={theme.typography.h1}>Leaderboard</Text>
-        <Text style={theme.typography.subtitle}>Top 5 Global Scores</Text>
-      </View>
-      {loading && scores.length === 0 ? (
-        <LoadingSpinner />
-      ) : (
-        <FlatList
-          data={scores}
-          keyExtractor={(item) => item.id?.toString() || String(item.timestamp)}
-          contentContainerStyle={theme.styles.listContent}
-          renderItem={renderItem}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={loading}
-              onRefresh={load}
-              tintColor={theme.colors.primary}
-            />
-          }
-          ListEmptyComponent={
-            <View style={theme.styles.centerAboveMd}>
-              <Text style={theme.typography.subtitle}>
-                No scores yet! Be the first!
-              </Text>
+      <Text style={[theme.typography.h1, { marginBottom: theme.spacing.md }]}>
+        Global Top 5
+      </Text>
+      
+      {error && <Text style={[theme.typography.body, { color: theme.colors.error }]}>{error}</Text>}
+
+      <FlatList
+        data={scores}
+        keyExtractor={(item) => item.id || String(item.timestamp)}
+        renderItem={({ item, index }) => (
+          <HighScoreItem item={item} index={index} />
+        )}
+        refreshControl={
+          <RefreshControl 
+            refreshing={loading} 
+            onRefresh={onRefresh} 
+            tintColor={theme.colors.primary} 
+          />
+        }
+        ListEmptyComponent={
+          !loading ? (
+            <View style={theme.styles.centered}>
+              <Text style={theme.typography.body}>No highscores yet! Be the first!</Text>
             </View>
-          }
-        />
-      )}
+          ) : null
+        }
+      />
     </View>
   );
 }
