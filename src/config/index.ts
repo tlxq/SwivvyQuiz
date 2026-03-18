@@ -4,6 +4,7 @@ export const QUIZ_SETTINGS = {
   QUESTION_TYPE: 'boolean' as const,
   DIFFICULTIES: ['easy', 'medium', 'hard'] as const,
   POINTS_PER_CORRECT: 10,
+  BONUS_PER_SECONDS: 2,
   CACHE_TTL: 1000 * 60 * 60, // 1 hour for categories cache
   MAX_HIGHSCORES: 5,
 };

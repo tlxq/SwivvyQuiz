@@ -49,6 +49,7 @@ export interface QuizState {
   questions: TriviaQuestion[];
   currentIndex: number;
   score: number;
+  userAnswers: string[];
   isGameOver: boolean;
   timeLeft: number;
 }

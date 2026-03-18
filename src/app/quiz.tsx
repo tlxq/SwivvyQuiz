@@ -28,8 +28,15 @@ export default function QuizScreen() {
     execute,
   } = useAsync<TriviaResponse>(true);
   const { saveScore, checkIfTopFive } = useHighScore();
-  const { questions, currentIndex, score, isGameOver, timeLeft, submitAnswer } =
-    useQuizGame(apiRes?.results || []);
+  const {
+    questions,
+    currentIndex,
+    score,
+    userAnswers,
+    isGameOver,
+    timeLeft,
+    submitAnswer,
+  } = useQuizGame(apiRes?.results || []);
 
   const [username, setUsername] = useState('');
   const [isTopScore, setIsTopScore] = useState(false);
@@ -71,18 +78,75 @@ export default function QuizScreen() {
 
   if (isGameOver) {
     return (
-      <View style={theme.styles.centerScreen}>
-        <Text style={theme.typography.h1}>Game Over!</Text>
+      <View style={[theme.styles.container, { paddingTop: 60 }]}>
+        <Text style={[theme.typography.h1, { textAlign: 'center' }]}>
+          Game Over!
+        </Text>
         <Text
           style={[
             theme.typography.h2,
-            { color: theme.colors.primary, marginBottom: 20 },
+            {
+              color: theme.colors.primary,
+              textAlign: 'center',
+              marginBottom: 10,
+            },
           ]}
         >
           Final Score: {score}
         </Text>
+
+        <ScrollView
+          style={{ flex: 1, marginVertical: 10 }}
+          showsVerticalScrollIndicator={false}
+        >
+          {questions.map((q, index) => {
+            const userAnswer = userAnswers[index];
+            const isCorrect = userAnswer === q.correct_answer;
+            return (
+              <Card
+                key={index}
+                style={{
+                  marginBottom: 10,
+                  borderLeftWidth: 5,
+                  borderLeftColor: isCorrect
+                    ? theme.colors.success
+                    : theme.colors.error,
+                }}
+              >
+                <Text style={theme.typography.caption}>Question {index + 1}</Text>
+                <Text style={[theme.typography.bodyBold, { marginVertical: 4 }]}>
+                  {decodeHTML(q.question)}
+                </Text>
+                <View style={theme.styles.row}>
+                  <Text style={theme.typography.caption}>Your answer: </Text>
+                  <Text
+                    style={[
+                      theme.typography.caption,
+                      { color: isCorrect ? theme.colors.success : theme.colors.error },
+                    ]}
+                  >
+                    {userAnswer || 'N/A'}
+                  </Text>
+                </View>
+                {!isCorrect && (
+                  <Text
+                    style={[
+                      theme.typography.caption,
+                      { color: theme.colors.success },
+                    ]}
+                  >
+                    Correct: {q.correct_answer}
+                  </Text>
+                )}
+              </Card>
+            );
+          })}
+        </ScrollView>
+
         {isTopScore ? (
-          <Card style={{ width: '100%', gap: theme.spacing.md }}>
+          <Card
+            style={{ width: '100%', gap: theme.spacing.md, marginBottom: 20 }}
+          >
             <Text style={theme.typography.bodyBold}>New Highscore!</Text>
             <TextInput
               style={styles.input}
@@ -99,15 +163,7 @@ export default function QuizScreen() {
             />
           </Card>
         ) : (
-          <View style={{ width: '100%', marginTop: 20 }}>
-            <Text
-              style={[
-                theme.typography.body,
-                { textAlign: 'center', marginBottom: 20 },
-              ]}
-            >
-              Good effort!
-            </Text>
+          <View style={{ width: '100%', marginTop: 10, marginBottom: 20 }}>
             <Button label="Back" onPress={() => router.replace('/(tabs)')} />
           </View>
         )}

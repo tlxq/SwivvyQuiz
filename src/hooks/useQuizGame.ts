@@ -10,6 +10,7 @@ export function useQuizGame(questions: TriviaQuestion[]) {
     questions: [],
     currentIndex: 0,
     score: 0,
+    userAnswers: [],
     isGameOver: false,
     timeLeft: QUIZ_SETTINGS.TIMER_LIMIT,
   });
@@ -23,6 +24,7 @@ export function useQuizGame(questions: TriviaQuestion[]) {
         questions,
         currentIndex: 0,
         score: 0,
+        userAnswers: [],
         isGameOver: false,
         timeLeft: QUIZ_SETTINGS.TIMER_LIMIT,
       });
@@ -40,12 +42,15 @@ export function useQuizGame(questions: TriviaQuestion[]) {
       setState((s) => {
         if (s.timeLeft <= 1) {
           const isLast = s.currentIndex >= s.questions.length - 1;
+          const newAnswers = [...s.userAnswers, 'Timed Out'];
+
           if (isLast) {
-            return { ...s, isGameOver: true, timeLeft: 0 };
+            return { ...s, userAnswers: newAnswers, isGameOver: true, timeLeft: 0 };
           }
           return {
             ...s,
             currentIndex: s.currentIndex + 1,
+            userAnswers: newAnswers,
             timeLeft: QUIZ_SETTINGS.TIMER_LIMIT,
           };
         }
@@ -65,15 +70,20 @@ export function useQuizGame(questions: TriviaQuestion[]) {
       if (!current || s.isGameOver) return s;
 
       const isCorrect = answer === current.correct_answer;
+      const timeBonus = isCorrect
+        ? s.timeLeft * QUIZ_SETTINGS.BONUS_PER_SECONDS
+        : 0;
       const newScore = isCorrect
-        ? s.score + QUIZ_SETTINGS.POINTS_PER_CORRECT
+        ? s.score + QUIZ_SETTINGS.POINTS_PER_CORRECT + timeBonus
         : s.score;
+      const newAnswers = [...s.userAnswers, answer];
       const isLast = s.currentIndex >= s.questions.length - 1;
 
       if (isLast) {
         return {
           ...s,
           score: newScore,
+          userAnswers: newAnswers,
           isGameOver: true,
           timeLeft: 0,
         };
@@ -83,6 +93,7 @@ export function useQuizGame(questions: TriviaQuestion[]) {
         ...s,
         score: newScore,
         currentIndex: s.currentIndex + 1,
+        userAnswers: newAnswers,
         timeLeft: QUIZ_SETTINGS.TIMER_LIMIT,
       };
     });
