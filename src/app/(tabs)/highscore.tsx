@@ -1,30 +1,21 @@
-import React, { useEffect, useCallback } from 'react';
-import { View, Text, FlatList, RefreshControl } from 'react-native';
+import React, { useEffect } from 'react';
+import { Text, FlatList, RefreshControl } from 'react-native';
 import { theme } from '@/theme';
 import { useHighScore } from '@/hooks/useHighScore';
-import { LoadingSpinner, HighScoreItem } from '@/components/ui';
+import { Screen, HighScoreItem } from '@/components/ui';
+import { QUIZ_SETTINGS } from '@/config/triviaConfig';
 
 export default function HighscoreScreen() {
   const { scores, loading, error, loadTopScores } = useHighScore();
 
-  useEffect(() => {
-    loadTopScores();
-  }, [loadTopScores]);
-
-  const onRefresh = useCallback(() => {
-    loadTopScores();
-  }, [loadTopScores]);
-
-  if (loading && scores.length === 0) return <LoadingSpinner />;
+  useEffect(() => { loadTopScores() }, [loadTopScores]);
 
   return (
-    <View style={theme.styles.container}>
+    <Screen loading={loading && !scores.length} error={error} onBack={loadTopScores}>
       <Text style={[theme.typography.h1, { marginBottom: theme.spacing.md }]}>
-        Global Top 5
+        Global Top {QUIZ_SETTINGS.MAX_HIGHSCORES}
       </Text>
       
-      {error && <Text style={[theme.typography.body, { color: theme.colors.error }]}>{error}</Text>}
-
       <FlatList
         data={scores}
         keyExtractor={(item) => item.id || String(item.timestamp)}
@@ -32,20 +23,10 @@ export default function HighscoreScreen() {
           <HighScoreItem item={item} index={index} />
         )}
         refreshControl={
-          <RefreshControl 
-            refreshing={loading} 
-            onRefresh={onRefresh} 
-            tintColor={theme.colors.primary} 
-          />
+          <RefreshControl refreshing={loading} onRefresh={loadTopScores} tintColor={theme.colors.primary} />
         }
-        ListEmptyComponent={
-          !loading ? (
-            <View style={theme.styles.centered}>
-              <Text style={theme.typography.body}>No highscores yet! Be the first!</Text>
-            </View>
-          ) : null
-        }
+        ListEmptyComponent={!loading ? <Text style={theme.typography.body}>No highscores yet! Be the first!</Text> : null}
       />
-    </View>
+    </Screen>
   );
 }

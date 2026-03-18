@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 import { theme } from '@/theme';
-import { Card, Button } from '@/components/ui';
+import { Screen, Card, Button } from '@/components/ui';
 
 export default function SettingsScreen() {
   return (
-    <View style={theme.styles.container}>
+    <Screen loading={false} error={null} onBack={() => {}}>
       <Text style={[theme.typography.h1, { marginBottom: theme.spacing.md }]}>
         Statistics
       </Text>
@@ -27,6 +27,6 @@ export default function SettingsScreen() {
         variant="danger"
         onPress={() => alert('Feature coming soon!')}
       />
-    </View>
+    </Screen>
   );
 }

@@ -17,6 +17,18 @@ export interface TriviaResponse {
   results: TriviaQuestion[];
 }
 
+export interface TriviaGlobalCounts {
+  categories: {
+    [key: string]: {
+      total_question_count: number;
+      total_easy_question_count: number;
+      total_medium_question_count: number;
+      total_hard_question_count: number;
+      total_boolean_question_count: number;
+    }
+  }
+}
+
 // Internal Highscore type
 export interface HighScoreEntry {
   id?: string;

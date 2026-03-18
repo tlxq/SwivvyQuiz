@@ -10,16 +10,20 @@ import {
 import { db } from '@/lib/firebase.client';
 import { HighScoreEntry } from '@/types';
 import { useAsync } from '@/hooks/useAsync';
+import { QUIZ_SETTINGS } from '@/config/triviaConfig';
 
+/**
+ * Hook for managing global highscores with Firebase Firestore.
+ */
 export function useHighScore() {
-  const { data, loading, error, execute } = useAsync<HighScoreEntry[]>();
+  const { data: scores, loading, error, execute } = useAsync<HighScoreEntry[]>();
 
   const loadTopScores = useCallback(async () => {
     const fetchScores = async (): Promise<HighScoreEntry[]> => {
       const q = query(
         collection(db, 'highscores'),
         orderBy('score', 'desc'),
-        limit(5)
+        limit(QUIZ_SETTINGS.MAX_HIGHSCORES)
       );
       const snap = await getDocs(q);
       return snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as HighScoreEntry));
@@ -31,14 +35,24 @@ export function useHighScore() {
     return addDoc(collection(db, 'highscores'), entry);
   }, []);
 
+  /**
+   * Optimized check to see if a score belongs in the top leaderboard.
+   * If scores are already loaded in state, it uses those instead of a network call.
+   */
   const checkIfTopFive = useCallback(async (score: number) => {
-    const q = query(collection(db, 'highscores'), orderBy('score', 'desc'), limit(5));
-    const snap = await getDocs(q);
-    const topScores = snap.docs.map(doc => doc.data().score as number);
-    
-    // It's a highscore if we have fewer than 5 entries OR if we beat the lowest top 5 score
-    return topScores.length < 5 || score > Math.min(...topScores);
-  }, []);
+    let topScores: number[];
 
-  return { scores: data || [], loading, error, loadTopScores, saveScore, checkIfTopFive };
+    if (scores && scores.length > 0) {
+      topScores = scores.map(s => s.score);
+    } else {
+      const q = query(collection(db, 'highscores'), orderBy('score', 'desc'), limit(QUIZ_SETTINGS.MAX_HIGHSCORES));
+      const snap = await getDocs(q);
+      topScores = snap.docs.map(doc => doc.data().score as number);
+    }
+    
+    // Eligible if list isn't full OR if score is better than the lowest existing top score
+    return topScores.length < QUIZ_SETTINGS.MAX_HIGHSCORES || score > Math.min(...topScores);
+  }, [scores]);
+
+  return { scores: scores || [], loading, error, loadTopScores, saveScore, checkIfTopFive };
 }

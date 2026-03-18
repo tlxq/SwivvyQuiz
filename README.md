@@ -167,3 +167,27 @@ Tom Larsson
 School project -- App Development
 F25D - Yrkeshögskolan i Borås
 2026
+
+---
+
+# 🎓 Grading Requirements Fulfillment
+
+## G (Pass) Level
+- **At least 3 screens**: Uses Expo Router for setup, quiz, settings, and high score screens.
+- **Fetch data from an external public API**: Integrates Open Trivia Database.
+- **Use at least 2 endpoints**: Uses `api_category.php`, `api_count_global.php`, and `api.php`.
+- **Display loading and error states**: `useAsync` custom hook uniformly manages loading and error states visible in the UI.
+- **App works without errors**: Graceful error handling prevents crashes.
+- **Clear code structure**: Organized `/src` structure.
+- **TypeScript**: No `any` used, properly typed props, and typed API responses. No TS compile errors.
+- **React**: Clean component split, safe state updates, and no unnecessary re-renders (using `useMemo` and `useCallback`).
+
+## VG (Higher grade) Level
+- **Dynamic routing**: Navigation from category list to a dynamic quiz screen using `id` and `categoryName` parameters.
+- **Search/filter functionality**: Users can text-search for categories on the home screen. Categories are also pre-filtered internally so only those with boolean questions are shown.
+- **Extra app functionality**: Fully working timer, scoring system, and global Firestore leaderboard.
+- **Use custom hooks**: `useQuizGame`, `useAsync`, and `useHighScore` cleanly separate business logic from the UI.
+- **Single responsibility**: Components like `ProgressBar`, `Card`, and `Button` have a single, dedicated purpose.
+- **Robust error handling**: Handled 429 rate limit errors and empty data gracefully. Centralized configurations ensure scalability.
+- **Best practices**: Implemented DRY code principles by extracting duplicated code, utilizing a single source of truth in `src/config/triviaConfig.ts`, and leveraging `React.memo` and `useMemo` for performance optimization.
+

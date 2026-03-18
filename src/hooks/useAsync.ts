@@ -1,9 +1,22 @@
 import { useState, useCallback } from 'react';
 
-export function useAsync<T>() {
+/**
+ * Custom hook for handling asynchronous operations with loading and error states.
+ * @param initialLoading Optional initial loading state (defaults to false).
+ */
+export function useAsync<T>(initialLoading: boolean = false) {
   const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(initialLoading);
   const [error, setError] = useState<string | null>(null);
+
+  /**
+   * Resets the async state to its initial values.
+   */
+  const reset = useCallback(() => {
+    setData(null);
+    setLoading(false);
+    setError(null);
+  }, []);
 
   const execute = useCallback(async (promise: Promise<T>) => {
     setLoading(true);
@@ -12,13 +25,14 @@ export function useAsync<T>() {
       const response = await promise;
       setData(response);
       return response;
-    } catch (e: any) {
-      setError(e.message || 'Something went wrong');
-      throw e;
+    } catch (e: unknown) {
+      const errorMessage = e instanceof Error ? e.message : 'Something went wrong';
+      setError(errorMessage);
+      return undefined;
     } finally {
       setLoading(false);
     }
   }, []);
 
-  return { data, loading, error, execute };
+  return { data, setData, loading, error, execute, reset };
 }
