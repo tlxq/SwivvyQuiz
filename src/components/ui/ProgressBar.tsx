@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import { theme } from '@/theme';
 
 export function ProgressBar({ progress }: { progress: number }) {
-  // progress should be 0 to 1
   return (
     <View style={theme.styles.progressBarTrack}>
       <View

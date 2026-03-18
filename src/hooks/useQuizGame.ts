@@ -1,14 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import { TriviaQuestion } from '@/types';
-import { QUIZ_SETTINGS } from '@/config/triviaConfig';
-
-interface QuizState {
-  questions: TriviaQuestion[];
-  currentIndex: number;
-  score: number;
-  isGameOver: boolean;
-  timeLeft: number;
-}
+import { TriviaQuestion, QuizState } from '@/types';
+import { QUIZ_SETTINGS } from '@/config';
 
 /**
  * Custom hook for managing the trivia game state, timer, and score.
@@ -45,7 +37,7 @@ export function useQuizGame(questions: TriviaQuestion[]) {
     if (state.isGameOver || state.questions.length === 0) return;
 
     const interval = setInterval(() => {
-      setState(s => {
+      setState((s) => {
         if (s.timeLeft <= 1) {
           const isLast = s.currentIndex >= s.questions.length - 1;
           if (isLast) {
@@ -68,12 +60,14 @@ export function useQuizGame(questions: TriviaQuestion[]) {
    * Submits a user's answer and calculates the score.
    */
   const submitAnswer = useCallback((answer: string) => {
-    setState(s => {
+    setState((s) => {
       const current = s.questions[s.currentIndex];
       if (!current || s.isGameOver) return s;
 
       const isCorrect = answer === current.correct_answer;
-      const newScore = isCorrect ? s.score + QUIZ_SETTINGS.POINTS_PER_CORRECT : s.score;
+      const newScore = isCorrect
+        ? s.score + QUIZ_SETTINGS.POINTS_PER_CORRECT
+        : s.score;
       const isLast = s.currentIndex >= s.questions.length - 1;
 
       if (isLast) {
@@ -81,7 +75,7 @@ export function useQuizGame(questions: TriviaQuestion[]) {
           ...s,
           score: newScore,
           isGameOver: true,
-          timeLeft: 0
+          timeLeft: 0,
         };
       }
 

@@ -1,15 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
 import { theme } from '@/theme';
+import { ScreenProps } from '@/types';
 import { LoadingSpinner } from './LoadingSpinner';
 import { ErrorDisplay } from './ErrorDisplay';
-
-interface ScreenProps {
-  loading: boolean;
-  error: string | null;
-  onBack: () => void;
-  children: React.ReactNode;
-}
 
 /**
  * Unified Screen wrapper that handles Loading and Error states centrally.

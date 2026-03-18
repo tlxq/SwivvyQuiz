@@ -4,20 +4,9 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
-  ViewStyle,
 } from 'react-native';
+import { ButtonProps } from '@/types';
 import { theme } from '@/theme';
-
-type ButtonVariant = 'primary' | 'success' | 'danger' | 'surface';
-
-interface ButtonProps {
-  label: string;
-  onPress: () => void;
-  variant?: ButtonVariant;
-  loading?: boolean;
-  disabled?: boolean;
-  style?: ViewStyle;
-}
 
 export function Button({
   label,

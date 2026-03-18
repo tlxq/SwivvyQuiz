@@ -9,14 +9,12 @@ import {
 } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { theme } from '@/theme';
-import { triviaService } from '@/services/triviaService';
-import { useQuizGame } from '@/hooks/useQuizGame';
-import { useHighScore } from '@/hooks/useHighScore';
-import { useAsync } from '@/hooks/useAsync';
+import { triviaService } from '@/services';
+import { useAsync, useQuizGame, useHighScore } from '@/hooks';
 import { Screen, Button, Card, ProgressBar } from '@/components/ui';
 import { TriviaResponse } from '@/types';
-import { QUIZ_SETTINGS } from '@/config/triviaConfig';
-import { decodeHTML } from '@/lib/utils';
+import { QUIZ_SETTINGS } from '@/config';
+import { decodeHTML } from '@/lib';
 
 export default function QuizScreen() {
   const { id, categoryName } = useLocalSearchParams<{

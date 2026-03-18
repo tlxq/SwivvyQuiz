@@ -1,5 +1,5 @@
 import { TriviaCategory, TriviaResponse } from '@/types';
-import { QUIZ_SETTINGS } from '@/config/triviaConfig';
+import { QUIZ_SETTINGS } from '@/config';
 
 const BASE_URL = 'https://opentdb.com';
 
@@ -7,7 +7,8 @@ let categoryCache: { data: TriviaCategory[]; timestamp: number } | null = null;
 
 const ERROR_MESSAGES = {
   RATE_LIMIT: 'API rate limit reached. Please wait and try again.',
-  NO_BOOLEAN: 'No boolean questions available for this category. Please choose another.',
+  NO_BOOLEAN:
+    'No boolean questions available for this category. Please choose another.',
   NETWORK: 'Network error. Please try again.',
 };
 
@@ -21,7 +22,8 @@ const apiFetch = async (endpoint: string) => {
     if (!res.ok) throw new Error(ERROR_MESSAGES.NETWORK);
     return res.json();
   } catch (e) {
-    if (e instanceof Error && Object.values(ERROR_MESSAGES).includes(e.message)) throw e;
+    if (e instanceof Error && Object.values(ERROR_MESSAGES).includes(e.message))
+      throw e;
     throw new Error(ERROR_MESSAGES.NETWORK);
   }
 };
@@ -32,7 +34,10 @@ export const triviaService = {
    */
   async getAllCategories(): Promise<TriviaCategory[]> {
     const now = Date.now();
-    if (categoryCache && (now - categoryCache.timestamp < QUIZ_SETTINGS.CACHE_TTL)) {
+    if (
+      categoryCache &&
+      now - categoryCache.timestamp < QUIZ_SETTINGS.CACHE_TTL
+    ) {
       return categoryCache.data;
     }
 
@@ -46,11 +51,13 @@ export const triviaService = {
    */
   async getQuestions(categoryId: number): Promise<TriviaResponse> {
     const { QUESTION_AMOUNT, QUESTION_TYPE } = QUIZ_SETTINGS;
-    const data = await apiFetch(`/api.php?amount=${QUESTION_AMOUNT}&category=${categoryId}&type=${QUESTION_TYPE}`);
-    
+    const data = await apiFetch(
+      `/api.php?amount=${QUESTION_AMOUNT}&category=${categoryId}&type=${QUESTION_TYPE}`,
+    );
+
     if (data.response_code !== 0 || !data.results?.length) {
       throw new Error(ERROR_MESSAGES.NO_BOOLEAN);
     }
     return data;
-  }
+  },
 };

@@ -32,22 +32,68 @@ const typography = {
   h1: { fontFamily: FONT_BOLD, fontSize: 32, color: colors.text },
   h2: { fontFamily: FONT_BOLD, fontSize: 24, color: colors.text },
   h3: { fontFamily: FONT_SEMIBOLD, fontSize: 20, color: colors.text },
-  subtitle: { fontFamily: FONT_REGULAR, fontSize: 18, color: colors.textSecondary },
+  subtitle: {
+    fontFamily: FONT_REGULAR,
+    fontSize: 18,
+    color: colors.textSecondary,
+  },
   body: { fontFamily: FONT_REGULAR, fontSize: 16, color: colors.text },
   bodyBold: { fontFamily: FONT_SEMIBOLD, fontSize: 16, color: colors.text },
-  caption: { fontFamily: FONT_SEMIBOLD, fontSize: 14, color: colors.textSecondary, textTransform: 'uppercase' as const },
+  caption: {
+    fontFamily: FONT_SEMIBOLD,
+    fontSize: 14,
+    color: colors.textSecondary,
+    textTransform: 'uppercase' as const,
+  },
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: spacing.lg, backgroundColor: colors.background },
+  container: {
+    flex: 1,
+    padding: spacing.lg,
+    backgroundColor: colors.background,
+  },
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  centerScreen: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: spacing.lg, backgroundColor: colors.background },
-  card: { backgroundColor: colors.surface, padding: spacing.lg, borderRadius: 20, borderWidth: 1, borderColor: colors.border, elevation: 4 },
-  progressBarTrack: { height: 8, backgroundColor: colors.surface, borderRadius: 4, width: '100%', overflow: 'hidden', marginVertical: spacing.md },
-  progressBarFill: { height: '100%', backgroundColor: colors.primary, borderRadius: 4 },
-  loadingSpinner: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: spacing.lg },
+  centerScreen: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: spacing.lg,
+    backgroundColor: colors.background,
+  },
+  card: {
+    backgroundColor: colors.surface,
+    padding: spacing.lg,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: colors.border,
+    elevation: 4,
+  },
+  progressBarTrack: {
+    height: 8,
+    backgroundColor: colors.surface,
+    borderRadius: 4,
+    width: '100%',
+    overflow: 'hidden',
+    marginVertical: spacing.md,
+  },
+  progressBarFill: {
+    height: '100%',
+    backgroundColor: colors.primary,
+    borderRadius: 4,
+  },
+  loadingSpinner: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: spacing.lg,
+  },
   row: { flexDirection: 'row', alignItems: 'center' },
-  spaceBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  spaceBetween: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 });
 
 export const theme = { colors, spacing, typography, styles };
