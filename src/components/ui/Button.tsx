@@ -1,5 +1,11 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, ViewStyle, TextStyle } from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  ViewStyle,
+} from 'react-native';
 import { theme } from '@/theme';
 
 type ButtonVariant = 'primary' | 'success' | 'danger' | 'surface';
@@ -13,27 +19,31 @@ interface ButtonProps {
   style?: ViewStyle;
 }
 
-export function Button({ 
-  label, 
-  onPress, 
-  variant = 'primary', 
-  loading = false, 
+export function Button({
+  label,
+  onPress,
+  variant = 'primary',
+  loading = false,
   disabled = false,
-  style 
+  style,
 }: ButtonProps) {
   const getBackgroundColor = () => {
     if (disabled) return theme.colors.surfaceElevated;
     switch (variant) {
-      case 'success': return theme.colors.success;
-      case 'danger': return theme.colors.error;
-      case 'surface': return theme.colors.surfaceElevated;
-      default: return theme.colors.primary;
+      case 'success':
+        return theme.colors.success;
+      case 'danger':
+        return theme.colors.error;
+      case 'surface':
+        return theme.colors.surfaceElevated;
+      default:
+        return theme.colors.primary;
     }
   };
 
   return (
-    <TouchableOpacity 
-      onPress={onPress} 
+    <TouchableOpacity
+      onPress={onPress}
       disabled={disabled || loading}
       style={[styles.base, { backgroundColor: getBackgroundColor() }, style]}
     >
