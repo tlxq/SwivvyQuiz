@@ -13,7 +13,11 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tlxq.SwivvyQuiz",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -22,7 +26,8 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.tlxq.SwivvyQuiz"
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -43,14 +48,15 @@
         "root": "src/app"
       },
       "eas": {
-        "projectId": "2c019a17-3b56-4628-8fa4-29379b580cfc"
+        "projectId": "6fd35e76-0df9-443d-aecf-c1cad3eef6dd"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/2c019a17-3b56-4628-8fa4-29379b580cfc"
-    }
+      "url": "https://u.expo.dev/6fd35e76-0df9-443d-aecf-c1cad3eef6dd"
+    },
+    "owner": "tlxq"
   }
 }
