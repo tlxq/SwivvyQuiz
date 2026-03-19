@@ -63,7 +63,7 @@ export default function QuizScreen() {
   const handleSaveScore = async () => {
     if (!username.trim())
       return Alert.alert('Required', 'Please enter your name');
-    
+
     setIsSaving(true);
     try {
       await saveScore({
@@ -80,7 +80,6 @@ export default function QuizScreen() {
     }
   };
 
-  // Clean up HTML entities from the question text
   const currentQuestionText = useMemo(
     () =>
       questions[currentIndex]
@@ -128,8 +127,12 @@ export default function QuizScreen() {
                     : theme.colors.error,
                 }}
               >
-                <Text style={theme.typography.caption}>Question {index + 1}</Text>
-                <Text style={[theme.typography.bodyBold, { marginVertical: 4 }]}>
+                <Text style={theme.typography.caption}>
+                  Question {index + 1}
+                </Text>
+                <Text
+                  style={[theme.typography.bodyBold, { marginVertical: 4 }]}
+                >
                   {decodeHTML(q.question)}
                 </Text>
                 <View style={theme.styles.row}>
@@ -137,7 +140,11 @@ export default function QuizScreen() {
                   <Text
                     style={[
                       theme.typography.caption,
-                      { color: isCorrect ? theme.colors.success : theme.colors.error },
+                      {
+                        color: isCorrect
+                          ? theme.colors.success
+                          : theme.colors.error,
+                      },
                     ]}
                   >
                     {userAnswer || 'N/A'}

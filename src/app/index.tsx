@@ -9,18 +9,24 @@ export default function WelcomeScreen() {
 
   return (
     <View style={theme.styles.centerScreen}>
-      <Text style={[theme.typography.h1, { color: theme.colors.primary, marginBottom: theme.spacing.md }]}>
+      <Text
+        style={[
+          theme.typography.h1,
+          { color: theme.colors.primary, marginBottom: theme.spacing.md },
+        ]}
+      >
         SwivvyQuiz
       </Text>
-      <Text style={[theme.typography.subtitle, { textAlign: 'center', marginBottom: theme.spacing.xl }]}>
-        Test your knowledge across different categories and climb the leaderboard!
+      <Text
+        style={[
+          theme.typography.subtitle,
+          { textAlign: 'center', marginBottom: theme.spacing.xl },
+        ]}
+      >
+        Test your knowledge - Better score if u are fast
       </Text>
-      
-      <Button 
-        label="Let's Play" 
-        onPress={onStart} 
-        style={{ width: '80%' }}
-      />
+
+      <Button label="Let's Play" onPress={onStart} style={{ width: '80%' }} />
     </View>
   );
 }

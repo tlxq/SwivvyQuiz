@@ -3,10 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { theme } from '@/theme';
 import { ErrorDisplayProps } from '@/types';
 import { Button } from './Button';
-/**
- * A reusable component for displaying error states with a "Go Back" action.
- * Ensures consistent UI and DRY principle across the app.
- */
+
 export const ErrorDisplay = React.memo(
   ({ message, onBack }: ErrorDisplayProps) => {
     return (
