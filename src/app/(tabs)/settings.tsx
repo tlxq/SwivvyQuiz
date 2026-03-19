@@ -24,7 +24,7 @@ export default function SettingsScreen() {
 
       <Button
         label="Clear History"
-        variant="danger"
+        variant="surface"
         onPress={() => alert('Feature coming soon!')}
       />
     </Screen>
