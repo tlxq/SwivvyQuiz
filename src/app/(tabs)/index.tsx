@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { View, Text, FlatList, TextInput, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TextInput, StyleSheet, Image } from 'react-native';
 import { router } from 'expo-router';
+import splashIcon from '@/assets/splash-icon.png';
 import { theme } from '@/theme';
 import { triviaService } from '@/services';
 import { Screen, Button, Card } from '@/components/ui';
@@ -41,9 +42,15 @@ export default function SetupScreen() {
       error={error}
       onBack={() => execute(triviaService.getAllCategories())}
     >
-      <Text style={[theme.typography.h1, { marginBottom: theme.spacing.md }]}>
-        Choose Category
-      </Text>
+      <View style={styles.header}>
+        <Image
+          source={splashIcon}
+          style={styles.logo}
+        />
+        <Text style={[theme.typography.h1, { marginBottom: theme.spacing.md }]}>
+          Choose Category
+        </Text>
+      </View>
 
       <TextInput
         style={styles.searchInput}
@@ -87,6 +94,16 @@ export default function SetupScreen() {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    alignItems: 'center',
+    marginBottom: theme.spacing.lg,
+  },
+  logo: {
+    width: 120,
+    height: 120,
+    marginBottom: theme.spacing.sm,
+    resizeMode: 'contain',
+  },
   searchInput: {
     backgroundColor: theme.colors.surface,
     color: theme.colors.text,

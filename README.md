@@ -1,10 +1,25 @@
-# 📱 SwivvyQuiz
+<p align="center">
+  <img src="assets/splash-icon.png" width="200" height="200" alt="SwivvyQuiz Logo" />
+</p>
 
-SwivvyQuiz is a dynamic trivia application built with React Native and Expo. It challenges users with True/False questions across various categories, featuring a global leaderboard powered by Firebase.
+# SwivvyQuiz APP
+
+SwivvyQuiz is a trivia app built with React Native and Expo, featuring True/False questions across multiple categories and a global leaderboard powered by Firebase. Developed as a school project, the primary focus was on code structure, logic, and learning rather than UI design.
 
 ---
 
-# 🚀 Features
+# Screenshots
+
+<p align="center">
+  <img src="assets/preview1.png" width="22%" alt="Welcome Screen" />
+  <img src="assets/preview2.png" width="22%" alt="Category Selection" />
+  <img src="assets/preview4.png" width="22%" alt="Quiz Screen" />
+  <img src="assets/preview3.png" width="22%" alt="Leaderboard" />
+</p>
+
+---
+
+# Features
 
 - 🔎 **Category Search**: Easily filter through dozens of trivia categories from the Open Trivia Database.
 - ⏱️ **Timed Challenges**: Quick-fire True/False questions with a countdown timer for each round.
@@ -15,7 +30,7 @@ SwivvyQuiz is a dynamic trivia application built with React Native and Expo. It 
 
 ---
 
-# 🧰 Tech Stack
+# Tech Stack
 
 - **React Native & Expo**: Core framework.
 - **TypeScript**: Type safety across the app.
@@ -24,7 +39,7 @@ SwivvyQuiz is a dynamic trivia application built with React Native and Expo. It 
 
 ---
 
-# 🌐 API
+# API
 
 API used in this project:
 
@@ -55,7 +70,7 @@ Example response:
 
 ---
 
-# 🧠 Technical Decisions
+# Technical Decisions
 
 ## Expo Router
 
@@ -129,7 +144,7 @@ Open the project in **Expo Go** or an emulator.
 
 ---
 
-# 🧪 Error Handling & Validation
+# Error Handling & Validation
 
 - **Async States**: Centralized handling of loading, error, and data states via the `useAsync` hook.
 - **Graceful Failures**: Try/catch blocks in services with user-friendly alerts for API or Database issues.
@@ -137,7 +152,7 @@ Open the project in **Expo Go** or an emulator.
 
 ---
 
-# 🎯 Learning Goals
+# Learning Goals
 
 - Set up and structure an Expo project with TypeScript.
 - Implement navigation between screens using Expo Router.
@@ -151,7 +166,7 @@ Open the project in **Expo Go** or an emulator.
 
 ---
 
-# 📚 Sources
+# Sources
 
 - [React Native Documentation](https://reactnative.dev/)
 - [Expo Documentation](https://docs.expo.dev/)
@@ -160,9 +175,9 @@ Open the project in **Expo Go** or an emulator.
 
 ---
 
-# 👤 Author
+# Author
 
-Tom Larsson
+<b>Tom Larsson</b>
 
 School project -- App Development
 F25D - Yrkeshögskolan i Borås
@@ -172,7 +187,8 @@ F25D - Yrkeshögskolan i Borås
 
 # 🎓 Grading Requirements Fulfillment
 
-## G (Pass) Level
+## G
+
 - **At least 3 screens**: Uses Expo Router for setup, quiz, settings, and high score screens.
 - **Fetch data from an external public API**: Integrates Open Trivia Database.
 - **Use at least 2 endpoints**: Uses `api_category.php`, `api_count_global.php`, and `api.php`.
@@ -182,7 +198,8 @@ F25D - Yrkeshögskolan i Borås
 - **TypeScript**: No `any` used, properly typed props, and typed API responses. No TS compile errors.
 - **React**: Clean component split, safe state updates, and no unnecessary re-renders (using `useMemo` and `useCallback`).
 
-## VG (Higher grade) Level
+## VG
+
 - **Dynamic routing**: Navigation from category list to a dynamic quiz screen using `id` and `categoryName` parameters.
 - **Search/filter functionality**: Users can text-search for categories on the home screen. Categories are also pre-filtered internally so only those with boolean questions are shown.
 - **Extra app functionality**: Fully working timer, scoring system, and global Firestore leaderboard.
@@ -190,4 +207,3 @@ F25D - Yrkeshögskolan i Borås
 - **Single responsibility**: Components like `ProgressBar`, `Card`, and `Button` have a single, dedicated purpose.
 - **Robust error handling**: Handled 429 rate limit errors and empty data gracefully. Centralized configurations ensure scalability.
 - **Best practices**: Implemented DRY code principles by extracting duplicated code, utilizing a single source of truth in `src/config/triviaConfig.ts`, and leveraging `React.memo` and `useMemo` for performance optimization.
-
